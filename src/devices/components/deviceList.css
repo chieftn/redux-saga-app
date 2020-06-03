@@ -1,0 +1,36 @@
+.device-list {
+    margin-top: 10px;
+}
+
+.device-list-tiles {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 15px;
+}
+
+.device-list-tile {
+    padding: 5px;
+    margin: 5px;
+    width: 320px;
+    height: 180px;
+    background-color: lightgray;
+}
+
+.device-list-tile-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.device-list-tile-row {
+    display: flex;
+}
+
+.device-list-tile-row-section-header {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.device-list-tile-row-header {
+    width: 100px;
+    margin-right: 5px;
+}

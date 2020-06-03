@@ -1,0 +1,17 @@
+body {
+    margin: 0px;
+    overflow: none;
+}
+
+.header {
+    height: 40px;
+    padding: 5px;
+    background-color: black;
+    color: white;
+    margin: 0px;
+}
+
+.content {
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+}
