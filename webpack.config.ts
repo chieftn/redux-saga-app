@@ -3,6 +3,9 @@ import * as path from 'path';
 const HtmlWebpackPlugin = require('html-webpack-plugin'); // tslint:disable-line: no-var-requires
 
 const config: webpack.Configuration = {
+    devServer: {
+        historyApiFallback: true,
+    },
 
     entry: {
         main: ['./src/index.tsx']
@@ -10,7 +13,7 @@ const config: webpack.Configuration = {
     output: {
         filename: '[name].[hash].js',
         path: path.resolve(__dirname, '.', 'dist'),
-        publicPath: ''
+        publicPath: '/'
     },
 
     resolve: {
