@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { toast } from 'react-toastify';
 import { Device } from '../models/device';
 import { DeviceEdgeConfiguration } from '../models/deviceEdgeConfiguration';
-import { getDeviceEntries } from '../helpers/promiseHelper';
+import { getDeviceEntries } from '../helpers/asyncHelper';
 import './deviceList.css';
 
 export const DeviceList: React.FC = props => {
@@ -13,6 +14,10 @@ export const DeviceList: React.FC = props => {
         .then(result => {
             setDevices(result.devices);
             setDevicesEdgeConfiguration(result.devicesEdgeConfiguration);
+            toast('Devices Loaded', { type: 'success' });
+        })
+        .catch(error => {
+            toast('Ruhroh -- something went wrong.', { type: 'error' });
         });
     }, []);  // tslint:disable-line: align
 
@@ -28,7 +33,7 @@ export const DeviceList: React.FC = props => {
 
     return (
         <div className="device-list">
-            <div className="device-list-tiles">{renderDeviceTiles()}</div>
+          <div className="device-list-tiles">{renderDeviceTiles()}</div>
         </div>
     );
 };
