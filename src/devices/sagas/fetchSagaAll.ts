@@ -1,4 +1,4 @@
-import { call, put } from 'redux-saga/effects';
+import { call, put, all } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
 import { fetchDevicesAction, setDeviceEdgeConfigurationAction } from '../actions';
 import { getHostName, getSharedAccessAuthorizationRules } from '../services/iotHubService';
@@ -8,7 +8,7 @@ import { Device } from '../models/device';
 import { DeviceEdgeConfiguration } from '../models/deviceEdgeConfiguration';
 import { SynchronizationWrapper, SynchronizationStatus } from '../models/synchronizationWrapper';
 
-export function* fetchSaga() {
+export function* fetchSagaAll() {
     try {
         const hostName: string = yield call(getHostName);
         const sharedAccessAuthorizationRules = yield call(getSharedAccessAuthorizationRules);
@@ -29,20 +29,8 @@ export function* fetchSaga() {
         });
 
         const devicesEdgeConfigurationMap = new Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>();
-        for (const device of devices) {
-            // tslint:disable-next-line: no-console
-            console.log(`fetching edge configuration for ${device.name}`);
-            const deviceEdgeConfiguration = yield call(getDeviceEdgeConfiguration, {
-                deviceName: device.name,
-                hostName,
-                sasToken,
-            });
-
-            devicesEdgeConfigurationMap.set(device.name, {
-                payload: deviceEdgeConfiguration,
-                synchronizationStatus: SynchronizationStatus.fetched
-            });
-        }
+        const result: Array<SynchronizationWrapper<DeviceEdgeConfiguration>> = yield all(devices.map((device: Device) => getDeviceEdgeConfigurationSaga(device, sasToken, hostName)));
+        result.forEach(s => devicesEdgeConfigurationMap.set(s.payload.deviceName, s));
 
         yield put(fetchDevicesAction.done({ result: devices }));
         yield put(setDeviceEdgeConfigurationAction(devicesEdgeConfigurationMap));
@@ -52,4 +40,17 @@ export function* fetchSaga() {
         yield put(fetchDevicesAction.failed(error));
         yield call(toast, 'An Error occurred', { type: 'error' });
     }
+}
+
+export function* getDeviceEdgeConfigurationSaga(device: Device, sasToken: string, hostName: string) {
+    const payload = yield call(getDeviceEdgeConfiguration, {
+        deviceName: device.name,
+        hostName,
+        sasToken
+    });
+
+    return {
+        payload,
+        synchronizationStatus: SynchronizationStatus.fetched
+    };
 }
