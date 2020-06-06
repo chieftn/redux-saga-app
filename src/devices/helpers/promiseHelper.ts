@@ -30,11 +30,10 @@ export const getDeviceEntries = (): Promise<{devices: Device[], devicesEdgeConfi
             });
         }).then(retrievedDevices => {
             devices = retrievedDevices;
-            const deviceEdgeConfigurationPromises = devices.map((device, index) => getDeviceEdgeConfiguration({
+            const deviceEdgeConfigurationPromises = devices.map(device => getDeviceEdgeConfiguration({
                 deviceName: device.name,
                 hostName,
                 sasToken,
-                seed: index
             }));
 
             return Promise.all(deviceEdgeConfigurationPromises);

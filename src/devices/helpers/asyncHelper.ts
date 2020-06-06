@@ -24,11 +24,10 @@ export const getDeviceEntries = async (): Promise<{devices: Device[], devicesEdg
             sasToken
         });
 
-        const devicesEdgeConfigurationPromises = devices.map((device, index) => getDeviceEdgeConfiguration({
+        const devicesEdgeConfigurationPromises = devices.map(device => getDeviceEdgeConfiguration({
             deviceName: device.name,
             hostName,
             sasToken,
-            seed: index
         }));
 
         const devicesEdgeConfigurationArray = await Promise.all(devicesEdgeConfigurationPromises);

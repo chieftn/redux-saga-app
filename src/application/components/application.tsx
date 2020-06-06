@@ -5,7 +5,8 @@ import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
 import store from '../../redux/store';
-import { DeviceList } from '../../devices/components/deviceListPromise';
+// import { DeviceList } from '../../devices/components/deviceListPromise';
+import { DeviceListReduxWrapper as DeviceList } from '../../devices/components/deviceList';
 import { Device } from '../../devices/components/device';
 import './application.css';
 
@@ -19,7 +20,7 @@ export const Application: React.FC = () => {
                         <BrowserRouter>
                             <Switch>
                                 <Route path="/" component={DeviceList} exact={true} />
-                                <Route path="/devices/" component={Device} />
+                                <Route path="/devices/:id" component={Device} />
                             </Switch>
                         </BrowserRouter>
                     </div>

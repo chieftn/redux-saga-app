@@ -37,9 +37,11 @@ export const DeviceList: React.FC<DeviceListProps> = props => {
 
 export const DeviceListReduxWrapper: React.FC = () => {
     const dispatch = useDispatch();
-    const devicesState = useSelector((state: StateInterface) => state.devices)
+    const devicesState = useSelector((state: StateInterface) => state.devices);
 
     const dispatchFetchDevices = () => {
+        // tslint:disable-next-line: no-console
+        console.log('here');
         dispatch(fetchDevicesAction.started(undefined));
     };
 
@@ -62,4 +64,4 @@ export const DeviceListTile: React.FC<DeviceListTileProps> = props => {
             Hello Device
         </div>
     );
-}
+};

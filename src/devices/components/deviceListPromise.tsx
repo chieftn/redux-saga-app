@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Device } from '../models/device';
 import { DeviceEdgeConfiguration } from '../models/deviceEdgeConfiguration';
@@ -17,7 +18,7 @@ export const DeviceList: React.FC = props => {
             toast('Devices Loaded', { type: 'success' });
         })
         .catch(error => {
-            toast('Ruhroh -- something went wrong.', { type: 'error' });
+            toast(`I am Error.  ${JSON.stringify(error)}`, { type: 'error' });
         });
     }, []);  // tslint:disable-line: align
 
@@ -48,7 +49,11 @@ export const DeviceListTile: React.FC<DeviceListTileProps> = props => {
 
     return (
         <div className="device-list-tile">
-            <div className="device-list-tile-name">{device.name}</div>
+            <div className="device-list-tile-name">
+                <NavLink to={`/devices/${device.name}`}>
+                    {device.name}
+                </NavLink>
+            </div>
 
             <div className="device-list-tile-row">
                 <div className="device-list-tile-row-header">Auth:</div>

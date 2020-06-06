@@ -28,14 +28,14 @@ export const getDevices = async (parameters: GetDevicesParameters): Promise<Devi
 };
 
 export interface GetDeviceEdgeConfigurationParameters {
-    seed: number;
     hostName: string;
     sasToken: string;
     deviceName: string;
 }
 // tslint:disable-next-line: cyclomatic-complexity
 export const getDeviceEdgeConfiguration = async (parameters: GetDeviceEdgeConfigurationParameters): Promise<DeviceEdgeConfiguration> => {
-    const { deviceName, seed} = parameters;
+    const { deviceName } = parameters;
+    const seed = Math.floor(Math.random() * 100); // tslint:disable-line: no-magic-numbers
 
     const edgeAgentSchemaVersion = (seed % 3 === 0) ? '1.0.0' : (seed % 5 === 0) ? '1.1.0' : '2.0.0';  // tslint:disable-line: no-magic-numbers
     const edgeHubSchemaVersion = (seed % 3 === 0) ? '1.0.1' : (seed % 5 === 0) ? '2.1.1' : '2.1.0';  // tslint:disable-line: no-magic-numbers
