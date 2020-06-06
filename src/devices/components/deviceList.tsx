@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Device } from '../models/device';
 import { SynchronizationStatus } from '../models/synchronizationWrapper';
@@ -40,15 +41,13 @@ export const DeviceListReduxWrapper: React.FC = () => {
     const devicesState = useSelector((state: StateInterface) => state.devices);
 
     const dispatchFetchDevices = () => {
-        // tslint:disable-next-line: no-console
-        console.log('here');
         dispatch(fetchDevicesAction.started(undefined));
     };
 
     return (
         <DeviceList
             devices={devicesState.devices.payload}
-            devicesStatus={devicesState.devices.syncronizationStatus}
+            devicesStatus={devicesState.devices.synchronizationStatus}
             fetchDevices={dispatchFetchDevices}
         />
     );
@@ -59,9 +58,42 @@ export interface DeviceListTileProps {
 }
 
 export const DeviceListTile: React.FC<DeviceListTileProps> = props => {
+    const { device } = props;
+    const devicesState = useSelector((state: StateInterface) => state.devices);
+    const deviceEdgeConfigurationWrapper = devicesState.devicesEdgeConfiguration.get(device.name);
+    const deviceEdgeConfiguration = deviceEdgeConfigurationWrapper?.payload;
+
     return (
         <div className="device-list-tile">
-            Hello Device
+            <div className="device-list-tile-name">
+                <NavLink to={`/devices/${device.name}`}>
+                    {device.name}
+                </NavLink>
+            </div>
+
+            <div className="device-list-tile-row">
+                <div className="device-list-tile-row-header">Auth:</div>
+                <div>{device.authentication}</div>
+            </div>
+
+            <div className="device-list-tile-row-section-header">Edge Statistics</div>
+
+            <div className="device-list-tile-row">
+                <div className="device-list-tile-row-header">Agent Schema:</div>
+                <div>{deviceEdgeConfiguration?.edgeAgentSchemaVersion || 'NA'}</div>
+            </div>
+            <div className="device-list-tile-row">
+                <div className="device-list-tile-row-header">Hub Schema:</div>
+                <div>{deviceEdgeConfiguration?.edgeHubSchemaVersion || 'NA'}</div>
+            </div>
+            <div className="device-list-tile-row">
+                <div className="device-list-tile-row-header">Module Count:</div>
+                <div>{deviceEdgeConfiguration?.edgeModules.length || 'NA'}</div>
+            </div>
+            <div className="device-list-tile-row">
+                <div className="device-list-tile-row-header">Status:</div>
+                <div>{deviceEdgeConfiguration?.status || 'NA'}</div>
+            </div>
         </div>
     );
 };

@@ -1,9 +1,12 @@
 import { call, put } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
-import { fetchDevicesAction, fetchDeviceEdgeConfigurationAction } from '../actions';
+import { fetchDevicesAction, setDeviceEdgeConfigurationAction } from '../actions';
 import { getHostName, getSharedAccessAuthorizationRules } from '../services/iotHubService';
 import { getDevices, getDeviceEdgeConfiguration } from '../services/deviceService';
 import { getCompatibleSharedAccessAuthorizationRule, generateSharedAccessKey } from '../helpers/sharedAccessKeyHelper';
+import { Device } from '../models/device';
+import { DeviceEdgeConfiguration } from '../models/deviceEdgeConfiguration';
+import { SynchronizationWrapper, SynchronizationStatus } from '../models/synchronizationWrapper';
 
 export function* fetchSaga() {
     try {
@@ -20,25 +23,48 @@ export function* fetchSaga() {
             sharedAccessAuthorizationRule,
         });
 
-        const devices = yield call(getDevices, {
+        const devices: Device[] = yield call(getDevices, {
             hostName,
             sasToken
         });
 
+        const devicesEdgeConfigurationMap = new Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>();
         for (const device of devices) {
             const deviceEdgeConfiguration = yield call(getDeviceEdgeConfiguration, {
-                deviceName: device.deviceName,
+                deviceName: device.name,
                 hostName,
                 sasToken,
             });
 
-            yield put(fetchDeviceEdgeConfigurationAction.done({
-                params: device.deviceName,
-                result: deviceEdgeConfiguration
-            }));
+            devicesEdgeConfigurationMap.set(device.name, {
+                payload: deviceEdgeConfiguration,
+                synchronizationStatus: SynchronizationStatus.fetched
+            });
         }
 
+        // yield all(devices.map((device: Device) => {
+        //     try {
+        //         const payload = await getDeviceEdgeConfiguration({
+        //             deviceName: device.name,
+        //             hostName,
+        //             sasToken
+        //         });
+
+        //         devicesEdgeConfigurationMap.set(device.name, {
+        //             payload,
+        //             synchronizationStatus: SynchronizationStatus.fetched
+        //         });
+
+        //     } catch(error) {
+        //         return {
+        //             error: 'error report',
+        //             synchronizationStatus: SynchronizationStatus.failed
+        //         };
+        //     }
+        // }));
+
         yield put(fetchDevicesAction.done({ result: devices }));
+        yield put(setDeviceEdgeConfigurationAction(devicesEdgeConfigurationMap));
         yield call(toast, 'Devices Loaded', { type: 'success' });
 
     } catch (error) {

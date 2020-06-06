@@ -10,7 +10,7 @@ export enum SynchronizationStatus {
 }
 
 export interface SynchronizationWrapper<T> {
-    syncronizationStatus: SynchronizationStatus;
+    synchronizationStatus: SynchronizationStatus;
     payload: T;
     error?: Error;
 }

@@ -1,17 +1,20 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
-import { fetchDevicesAction } from './actions';
+import { fetchDevicesAction, setDeviceEdgeConfigurationAction } from './actions';
 import { DevicesStateInterface, getInitialDevicesState } from './state';
 import { Device } from './models/device';
+import { DeviceEdgeConfiguration } from './models/deviceEdgeConfiguration';
+import { SynchronizationWrapper, SynchronizationStatus } from './models/synchronizationWrapper';
 import { Error } from './models/error';
-import { SynchronizationStatus } from './models/synchronizationWrapper';
 
 export const devicesReducer = reducerWithInitialState<DevicesStateInterface>(getInitialDevicesState())
     .case(fetchDevicesAction.started, (state: DevicesStateInterface) => {
         const updatedState = {...state};
         updatedState.devices = {
             payload: [],
-            syncronizationStatus: SynchronizationStatus.working
+            synchronizationStatus: SynchronizationStatus.working
         };
+
+        updatedState.devicesEdgeConfiguration = new Map();
 
         return updatedState;
     })
@@ -20,7 +23,7 @@ export const devicesReducer = reducerWithInitialState<DevicesStateInterface>(get
         const updatedState = {...state};
         updatedState.devices = {
             payload: payload.result,
-            syncronizationStatus: SynchronizationStatus.fetched
+            synchronizationStatus: SynchronizationStatus.fetched
         };
 
         return updatedState;
@@ -31,8 +34,14 @@ export const devicesReducer = reducerWithInitialState<DevicesStateInterface>(get
         updatedState.devices = {
             error: payload.error,
             payload: [],
-            syncronizationStatus: SynchronizationStatus.failed
+            synchronizationStatus: SynchronizationStatus.failed
         };
 
+        return updatedState;
+    })
+
+    .case(setDeviceEdgeConfigurationAction, (state: DevicesStateInterface, payload: Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>) => {
+        const updatedState = {...state};
+        updatedState.devicesEdgeConfiguration = payload;
         return updatedState;
     });
