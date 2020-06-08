@@ -2,22 +2,18 @@ import * as React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Device } from '../models/device';
-import { SynchronizationStatus } from '../models/synchronizationWrapper';
 import { fetchDevicesAction } from '../actions';
 import { StateInterface } from '../../redux/state';
 import './deviceList.css';
+import { SynchronizationStatus } from '../models/synchronizationWrapper';
 
-export interface DeviceListProps {
-    devices: Device[];
-    devicesStatus: SynchronizationStatus;
-    fetchDevices(): void;
-}
-
-export const DeviceList: React.FC<DeviceListProps> = props => {
-    const { devices, fetchDevices } = props;
+export const DeviceList: React.FC = () => {
+    const dispatch = useDispatch();
+    const devicesState = useSelector((state: StateInterface) => state.devices);
+    const devices = devicesState.devices.payload;
 
     React.useEffect(() => {
-        fetchDevices();
+        dispatch(fetchDevicesAction.started(undefined));
     }, []);  // tslint:disable-line: align
 
     const renderDeviceTiles = () => {
@@ -36,32 +32,12 @@ export const DeviceList: React.FC<DeviceListProps> = props => {
     );
 };
 
-export const DeviceListReduxWrapper: React.FC = () => {
-    const dispatch = useDispatch();
-    const devicesState = useSelector((state: StateInterface) => state.devices);
-
-    const dispatchFetchDevices = () => {
-        dispatch(fetchDevicesAction.started(undefined));
-    };
-
-    return (
-        <DeviceList
-            devices={devicesState.devices.payload}
-            devicesStatus={devicesState.devices.synchronizationStatus}
-            fetchDevices={dispatchFetchDevices}
-        />
-    );
-};
-
 export interface DeviceListTileProps {
     device: Device;
 }
 
 export const DeviceListTile: React.FC<DeviceListTileProps> = props => {
     const { device } = props;
-    const devicesState = useSelector((state: StateInterface) => state.devices);
-    const deviceEdgeConfigurationWrapper = devicesState.devicesEdgeConfiguration.get(device.name);
-    const deviceEdgeConfiguration = deviceEdgeConfigurationWrapper?.payload;
 
     return (
         <div className="device-list-tile">
@@ -77,23 +53,43 @@ export const DeviceListTile: React.FC<DeviceListTileProps> = props => {
             </div>
 
             <div className="device-list-tile-row-section-header">Edge Statistics</div>
-
-            <div className="device-list-tile-row">
-                <div className="device-list-tile-row-header">Agent Schema:</div>
-                <div>{deviceEdgeConfiguration?.edgeAgentSchemaVersion || 'NA'}</div>
-            </div>
-            <div className="device-list-tile-row">
-                <div className="device-list-tile-row-header">Hub Schema:</div>
-                <div>{deviceEdgeConfiguration?.edgeHubSchemaVersion || 'NA'}</div>
-            </div>
-            <div className="device-list-tile-row">
-                <div className="device-list-tile-row-header">Module Count:</div>
-                <div>{deviceEdgeConfiguration?.edgeModules.length || 'NA'}</div>
-            </div>
-            <div className="device-list-tile-row">
-                <div className="device-list-tile-row-header">Status:</div>
-                <div>{deviceEdgeConfiguration?.status || 'NA'}</div>
-            </div>
+            <DeviceEdgeConfiguration deviceName={device.name} />
         </div>
+    );
+};
+
+export const DeviceEdgeConfiguration: React.FC<{deviceName: string}> = props => {
+    const { deviceName } = props;
+    const devicesState = useSelector((state: StateInterface) => state.devices);
+    const deviceEdgeConfigurationWrapper = devicesState.devicesEdgeConfiguration.get(deviceName);
+    const deviceEdgeConfiguration = deviceEdgeConfigurationWrapper?.payload;
+
+    if (deviceEdgeConfigurationWrapper &&
+        deviceEdgeConfiguration &&
+        deviceEdgeConfigurationWrapper.synchronizationStatus === SynchronizationStatus.fetched) {
+            return (
+                <>
+                    <div className="device-list-tile-row">
+                        <div className="device-list-tile-row-header">Agent Schema:</div>
+                        <div>{deviceEdgeConfiguration.edgeAgentSchemaVersion}</div>
+                    </div>
+                    <div className="device-list-tile-row">
+                        <div className="device-list-tile-row-header">Hub Schema:</div>
+                        <div>{deviceEdgeConfiguration.edgeHubSchemaVersion}</div>
+                    </div>
+                    <div className="device-list-tile-row">
+                        <div className="device-list-tile-row-header">Module Count:</div>
+                        <div>{deviceEdgeConfiguration.edgeModules.length}</div>
+                    </div>
+                    <div className="device-list-tile-row">
+                        <div className="device-list-tile-row-header">Status:</div>
+                        <div>{deviceEdgeConfiguration.status}</div>
+                    </div>
+                </>
+            );
+    }
+
+    return (
+        <div>loading Edge information</div>
     );
 };

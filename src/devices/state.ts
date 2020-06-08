@@ -4,12 +4,12 @@ import { DeviceEdgeConfiguration } from './models/deviceEdgeConfiguration';
 
 export interface DevicesStateInterface {
     devices: SynchronizationWrapper<Device[]>;
-    devicesEdgeConfiguration: Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>;
+    devicesEdgeConfiguration: Map<string, SynchronizationWrapper<DeviceEdgeConfiguration | undefined>>;
 }
 
 export const getInitialDevicesState = (): DevicesStateInterface => {
     return {
         devices: { payload: [], synchronizationStatus: SynchronizationStatus.initialized},
-        devicesEdgeConfiguration: new Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>()
+        devicesEdgeConfiguration: new Map<string, SynchronizationWrapper<DeviceEdgeConfiguration | undefined>>()
     };
 };
