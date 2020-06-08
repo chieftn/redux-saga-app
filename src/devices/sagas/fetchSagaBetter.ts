@@ -1,4 +1,5 @@
 import { call, put, all, select } from 'redux-saga/effects';
+import { toast } from 'react-toastify';
 import { fetchDevicesAction, setDeviceEdgeConfigurationAction } from '../actions';
 import { getHostName, getSharedAccessAuthorizationRules } from '../services/iotHubService';
 import { getDevices, getDeviceEdgeConfiguration } from '../services/deviceService';
@@ -38,6 +39,7 @@ export function* fetchDeviceEdgeConfigurationSaga(device: Device) {
                 synchronizationStatus: SynchronizationStatus.fetched
             }
         }));
+
     }
     catch (error) {
         yield put(setDeviceEdgeConfigurationAction({
@@ -54,6 +56,7 @@ export function* fetchDeviceEdgeConfigurationSaga(device: Device) {
 export function* fetchDevicesEdgeConfigurationSaga() {
     const devices: Device[] = yield select((state: StateInterface) => state.devices.devices.payload);
     yield all(devices.map((device: Device) => fetchDeviceEdgeConfigurationSaga(device)));
+    yield call(toast, 'Devices Loaded', { type: 'success' });
 }
 
 export function* fetchDataPlaneParameters(permissionEnumeration: string) {
@@ -76,6 +79,6 @@ export function* fetchDataPlaneParameters(permissionEnumeration: string) {
             sasToken
         };
     } catch (error) {
-        throw new Error('Unable to retrieve necessary information for data plane call.  Please ensure a permission with is available.')
+        throw new Error('Unable to retrieve necessary information for data plane call.  Please ensure a permission with is available.');
     }
 }

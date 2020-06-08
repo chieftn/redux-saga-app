@@ -1,5 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
+import { Map } from 'immutable';
 import { cloneableGenerator } from '@redux-saga/testing-utils';
 import { fetchSaga } from './fetchSaga';
 import { fetchDevicesAction, setDevicesEdgeConfigurationAction } from '../actions';
@@ -151,7 +152,7 @@ const devices = [
     }
 ];
 
-const deviceEdgeConfigurationMap = new Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>();
+const deviceEdgeConfigurationMap = Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>();
 deviceEdgeConfigurationMap.set('device1', {
     payload: {
         deviceName: 'device1',

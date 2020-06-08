@@ -1,4 +1,5 @@
 import { call, put } from 'redux-saga/effects';
+import { Map } from 'immutable';
 import { toast } from 'react-toastify';
 import { fetchDevicesAction, setDevicesEdgeConfigurationAction } from '../actions';
 import { getHostName, getSharedAccessAuthorizationRules } from '../services/iotHubService';
@@ -28,7 +29,7 @@ export function* fetchSaga() {
             sasToken
         });
 
-        const devicesEdgeConfigurationMap = new Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>();
+        const devicesEdgeConfigurationMap = Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>();
         for (const device of devices) {
             // tslint:disable-next-line: no-console
             console.log(`fetching edge configuration for ${device.name}`);

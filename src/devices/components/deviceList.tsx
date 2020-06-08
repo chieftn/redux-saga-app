@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 import { Device } from '../models/device';
 import { fetchDevicesAction } from '../actions';
 import { StateInterface } from '../../redux/state';
@@ -90,6 +91,8 @@ export const DeviceEdgeConfiguration: React.FC<{deviceName: string}> = props => 
     }
 
     return (
-        <div>loading Edge information</div>
+        <div>
+            <Spinner size={SpinnerSize.medium} />
+        </div>
     );
 };

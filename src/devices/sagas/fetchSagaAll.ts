@@ -1,4 +1,5 @@
 import { call, put, all } from 'redux-saga/effects';
+import { Map } from 'immutable';
 import { toast } from 'react-toastify';
 import { fetchDevicesAction, setDevicesEdgeConfigurationAction } from '../actions';
 import { getHostName, getSharedAccessAuthorizationRules } from '../services/iotHubService';
@@ -28,7 +29,7 @@ export function* fetchSagaAll() {
             sasToken
         });
 
-        const devicesEdgeConfigurationMap = new Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>();
+        const devicesEdgeConfigurationMap = Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>();
         const result: Array<SynchronizationWrapper<DeviceEdgeConfiguration>> = yield all(devices.map((device: Device) => fetchDeviceEdgeConfigurationSaga(device, sasToken, hostName)));
         result.forEach(s => devicesEdgeConfigurationMap.set(s.payload.deviceName, s));
 

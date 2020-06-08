@@ -1,4 +1,5 @@
 import actionCreatorFactory from 'typescript-fsa';
+import { Map } from 'immutable';
 import { Device } from './models/device';
 import { DeviceEdgeConfiguration } from './models/deviceEdgeConfiguration';
 import { SynchronizationWrapper } from './models/synchronizationWrapper';
