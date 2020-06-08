@@ -4,7 +4,6 @@ import { DevicesStateInterface, getInitialDevicesState } from './state';
 import { Device } from './models/device';
 import { DeviceEdgeConfiguration } from './models/deviceEdgeConfiguration';
 import { SynchronizationWrapper, SynchronizationStatus } from './models/synchronizationWrapper';
-import { Error } from './models/error';
 
 export const devicesReducer = reducerWithInitialState<DevicesStateInterface>(getInitialDevicesState())
     .case(fetchDevicesAction.started, (state: DevicesStateInterface) => {

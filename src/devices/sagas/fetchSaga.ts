@@ -49,7 +49,7 @@ export function* fetchSaga() {
         yield call(toast, 'Devices Loaded', { type: 'success' });
 
     } catch (error) {
-        yield put(fetchDevicesAction.failed(error));
-        yield call(toast, 'An Error occurred', { type: 'error' });
+        yield put(fetchDevicesAction.failed({error}));
+        yield call(toast, 'An error occurred', { type: 'error' });
     }
 }

@@ -26,6 +26,7 @@
     "typescript-fsa-reducers": "1.2.1"
   },
   "devDependencies": {
+    "@redux-saga/testing-utils": "1.1.3",
     "@testing-library/jest-dom": "5.9.0",
     "@testing-library/react": "10.0.5",
     "@types/html-webpack-plugin": "3.2.3",

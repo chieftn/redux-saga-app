@@ -1,5 +1,3 @@
-import { Error } from './error';
-
 export enum SynchronizationStatus {
     initialized,
     deleted,
