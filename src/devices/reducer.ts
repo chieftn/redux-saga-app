@@ -1,6 +1,6 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import { Map } from 'immutable';
-import { fetchDevicesAction, setDevicesEdgeConfigurationAction, setDeviceEdgeConfigurationAction, setServiceParametersAction } from './actions';
+import { fetchDevicesAction, setDevicesEdgeConfigurationAction, setServiceParametersAction } from './actions';
 import { DevicesStateInterface, getInitialDevicesState } from './state';
 import { Device } from './models/device';
 import { DeviceEdgeConfiguration } from './models/deviceEdgeConfiguration';
@@ -44,13 +44,6 @@ export const devicesReducer = reducerWithInitialState<DevicesStateInterface>(get
     .case(setDevicesEdgeConfigurationAction, (state: DevicesStateInterface, payload: Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>) => {
         const updatedState = {...state};
         updatedState.devicesEdgeConfiguration = payload;
-        return updatedState;
-    })
-
-    .case(setDeviceEdgeConfigurationAction, (state: DevicesStateInterface, payload: { name: string, value: SynchronizationWrapper<DeviceEdgeConfiguration | undefined>}) => {
-        const updatedState = {...state};
-        updatedState.devicesEdgeConfiguration = updatedState.devicesEdgeConfiguration.set(payload.name, payload.value);
-
         return updatedState;
     })
 

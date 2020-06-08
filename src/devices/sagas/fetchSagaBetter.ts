@@ -1,12 +1,14 @@
 import { call, put, all, select } from 'redux-saga/effects';
+import { Map } from 'immutable';
 import { toast } from 'react-toastify';
-import { fetchDevicesAction, setDeviceEdgeConfigurationAction, setServiceParametersAction } from '../actions';
+import { fetchDevicesAction, setDevicesEdgeConfigurationAction, setServiceParametersAction } from '../actions';
 import { getHostName, getSharedAccessAuthorizationRules } from '../services/iotHubService';
 import { getDevices, getDeviceEdgeConfiguration } from '../services/deviceService';
 import { getCompatibleSharedAccessAuthorizationRule, generateSharedAccessKey } from '../helpers/sharedAccessKeyHelper';
 import { Device } from '../models/device';
-import { SynchronizationStatus } from '../models/synchronizationWrapper';
 import { StateInterface } from '../../redux/state';
+import { DeviceEdgeConfiguration } from '../models/deviceEdgeConfiguration';
+import { SynchronizationWrapper, SynchronizationStatus } from '../models/synchronizationWrapper';
 
 export function* fetchDevicesSaga() {
     try {
@@ -32,31 +34,36 @@ export function* fetchDeviceEdgeConfigurationSaga(device: Device) {
             sasToken
         });
 
-        yield put(setDeviceEdgeConfigurationAction({
+        return {
             name: device.name,
             value: {
                 payload,
                 synchronizationStatus: SynchronizationStatus.fetched
             }
-        }));
+        };
 
     }
     catch (error) {
-        yield put(setDeviceEdgeConfigurationAction({
+        return {
             name: device.name,
             value: {
                 error,
                 payload: undefined,
                 synchronizationStatus: SynchronizationStatus.failed
             }
-        }));
+        };
     }
 }
 
 export function* fetchDevicesEdgeConfigurationSaga() {
     const devices: Device[] = yield select((state: StateInterface) => state.devices.devices.payload);
-    yield all(devices.map((device: Device) => fetchDeviceEdgeConfigurationSaga(device)));
-    yield call(toast, 'Devices Loaded', { type: 'success' });
+    const result: Array<SynchronizationWrapper<DeviceEdgeConfiguration>> = yield all(devices.map((device: Device) => fetchDeviceEdgeConfigurationSaga(device)));
+    const devicesEdgeConfigurationMap = Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>(
+        result.map(s => [s.payload.deviceName, s])
+    );
+
+    yield put(setDevicesEdgeConfigurationAction(devicesEdgeConfigurationMap));
+
 }
 
 export function* fetchDataPlaneParameters(permissionEnumeration: string) {
@@ -99,8 +106,10 @@ export function* fetchServiceParametersSaga() {
         sharedAccessAuthorizationRules: yield call(getSharedAccessAuthorizationRules)
     };
 
-    // tslint:disable-next-line: no-console
-    console.log('blr' + result.hostName);
     yield put(setServiceParametersAction(result));
     return result;
+}
+
+export function* fetchDevicesDoneSaga() {
+    yield call(toast, 'Devices Loaded', { type: 'success' });
 }

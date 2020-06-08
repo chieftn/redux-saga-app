@@ -152,25 +152,31 @@ const devices = [
     }
 ];
 
-const deviceEdgeConfigurationMap = Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>();
-deviceEdgeConfigurationMap.set('device1', {
-    payload: {
-        deviceName: 'device1',
-        edgeAgentSchemaVersion: '1.0.0',
-        edgeHubSchemaVersion: '1.0.0',
-        edgeModules: [],
-        status: 'running'
-    },
-    synchronizationStatus: SynchronizationStatus.fetched,
-});
-
-deviceEdgeConfigurationMap.set('device2', {
-    payload: {
-        deviceName: 'device2',
-        edgeAgentSchemaVersion: '1.0.1',
-        edgeHubSchemaVersion: '1.0.1',
-        edgeModules: [],
-        status: 'running'
-    },
-    synchronizationStatus: SynchronizationStatus.fetched,
-});
+const deviceEdgeConfigurationMap = Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>([
+    [
+        'device1',
+        {
+            payload: {
+                deviceName: 'device1',
+                edgeAgentSchemaVersion: '1.0.0',
+                edgeHubSchemaVersion: '1.0.0',
+                edgeModules: [],
+                status: 'running'
+            },
+            synchronizationStatus: SynchronizationStatus.fetched,
+        }
+    ],
+    [
+    'device2',
+    {
+            payload: {
+                deviceName: 'device2',
+                edgeAgentSchemaVersion: '1.0.1',
+                edgeHubSchemaVersion: '1.0.1',
+                edgeModules: [],
+                status: 'running'
+            },
+            synchronizationStatus: SynchronizationStatus.fetched,
+        }
+    ]
+]);

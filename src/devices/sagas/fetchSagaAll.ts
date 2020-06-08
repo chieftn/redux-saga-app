@@ -29,9 +29,10 @@ export function* fetchSagaAll() {
             sasToken
         });
 
-        const devicesEdgeConfigurationMap = Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>();
         const result: Array<SynchronizationWrapper<DeviceEdgeConfiguration>> = yield all(devices.map((device: Device) => fetchDeviceEdgeConfigurationSaga(device, sasToken, hostName)));
-        result.forEach(s => devicesEdgeConfigurationMap.set(s.payload.deviceName, s));
+        const devicesEdgeConfigurationMap = Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>(
+            result.map(s => [s.payload.deviceName, s])
+        );
 
         yield put(fetchDevicesAction.done({ result: devices }));
         yield put(setDevicesEdgeConfigurationAction(devicesEdgeConfigurationMap));
