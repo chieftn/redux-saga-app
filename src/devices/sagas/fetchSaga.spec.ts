@@ -75,8 +75,83 @@ describe('fetchSaga', () => {
     });
 
     it('yields call getCompatibleSharedAccessAuthorizationRule', () => {
+        expect(fetchSagaGenerator.next(sharedAccessAuthorizationRules)).toEqual({
+            done: false,
+            value: call(getCompatibleSharedAccessAuthorizationRule, {
+                permissionEnumeration: 'read',
+                sharedAccessAuthorizationRules
+            })
+        });
     });
 
+    it('yields call generateSharedAccessKey', () => {
+        expect(fetchSagaGenerator.next(sharedAccessAuthorizationRule)).toEqual({
+            done: false,
+            value: call(generateSharedAccessKey, {
+                durationInSeconds: 200,
+                sharedAccessAuthorizationRule
+            })
+        });
+    });
+
+    it('yields call getDevices', () => {
+        expect(fetchSagaGenerator.next(sasToken)).toEqual({
+            done: false,
+            value: call(getDevices, {
+                hostName,
+                sasToken
+            })
+        });
+    });
+
+    it('yields call to getEdgeDeviceConfiguration', () => {
+        expect(fetchSagaGenerator.next(devices)).toEqual({
+            done: false,
+            value: call(getDeviceEdgeConfiguration, {
+                deviceName: devices[0].name,
+                hostName,
+                sasToken
+            })
+        });
+    });
+
+    it('yields call to getEdgeDeviceConfiguration - 2', () => {
+        expect(fetchSagaGenerator.next(deviceEdgeConfigurationMap.get('device1').payload)).toEqual({
+            done: false,
+            value: call(getDeviceEdgeConfiguration, {
+                deviceName: devices[1].name,
+                hostName,
+                sasToken
+            })
+        });
+    });
+
+    it('yields put to fetchDevicesAction.done', () => {
+        expect(fetchSagaGenerator.next(deviceEdgeConfigurationMap.get('device2').payload)).toEqual({
+            done: false,
+            value: put(fetchDevicesAction.done({result: devices}))
+        });
+    });
+
+    it('yields put to setDevicesEdgeConfigurationAction', () => {
+        expect(fetchSagaGenerator.next()).toEqual({
+            done: false,
+            value: put(setDeviceEdgeConfigurationAction(deviceEdgeConfigurationMap))
+        });
+    });
+
+    it('yields call to toast', () => {
+        expect(fetchSagaGenerator.next()).toEqual({
+            done: false,
+            value: call(toast, 'Devices Loaded', { type: 'success' })
+        });
+    });
+
+    it('finishes', () => {
+        expect(fetchSagaGenerator.next()).toEqual({
+            done: true
+        });
+    });
 });
 
 const fetchSagaGenerator = cloneableGenerator(fetchSaga)();
