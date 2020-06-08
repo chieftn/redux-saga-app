@@ -57,9 +57,9 @@ export function* fetchDeviceEdgeConfigurationSaga(device: Device) {
 
 export function* fetchDevicesEdgeConfigurationSaga() {
     const devices: Device[] = yield select((state: StateInterface) => state.devices.devices.payload);
-    const result: Array<SynchronizationWrapper<DeviceEdgeConfiguration>> = yield all(devices.map((device: Device) => fetchDeviceEdgeConfigurationSaga(device)));
+    const result: Array<{ name: string, value: SynchronizationWrapper<DeviceEdgeConfiguration>}> = yield all(devices.map((device: Device) => fetchDeviceEdgeConfigurationSaga(device)));
     const devicesEdgeConfigurationMap = Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>(
-        result.map(s => [s.payload.deviceName, s])
+        result.map(s => [s.name, s.value])
     );
 
     yield put(setDevicesEdgeConfigurationAction(devicesEdgeConfigurationMap));
