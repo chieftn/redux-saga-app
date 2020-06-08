@@ -3,7 +3,8 @@ import { NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Device } from '../models/device';
 import { DeviceEdgeConfiguration } from '../models/deviceEdgeConfiguration';
-import { getDeviceEntries } from '../helpers/asyncHelper';
+import { getDeviceEntries } from '../helpers/promiseHelper';
+// import { getDeviceEntries } from '../helpers/asyncHelper';
 import './deviceList.css';
 
 export const DeviceList: React.FC = props => {
