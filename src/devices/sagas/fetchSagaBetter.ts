@@ -1,6 +1,6 @@
 import { call, put, all, select } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
-import { fetchDevicesAction, setDeviceEdgeConfigurationAction } from '../actions';
+import { fetchDevicesAction, setDeviceEdgeConfigurationAction, setServiceParametersAction } from '../actions';
 import { getHostName, getSharedAccessAuthorizationRules } from '../services/iotHubService';
 import { getDevices, getDeviceEdgeConfiguration } from '../services/deviceService';
 import { getCompatibleSharedAccessAuthorizationRule, generateSharedAccessKey } from '../helpers/sharedAccessKeyHelper';
@@ -61,8 +61,9 @@ export function* fetchDevicesEdgeConfigurationSaga() {
 
 export function* fetchDataPlaneParameters(permissionEnumeration: string) {
     try {
-        const hostName: string = yield call(getHostName);
-        const sharedAccessAuthorizationRules = yield call(getSharedAccessAuthorizationRules);
+        const { hostName, sharedAccessAuthorizationRules} = yield call(fetchServiceParametersSaga);
+        // const hostName: string = yield call(getHostName);
+        // const sharedAccessAuthorizationRules = yield call(getSharedAccessAuthorizationRules);
 
         const sharedAccessAuthorizationRule = yield call(getCompatibleSharedAccessAuthorizationRule, {
             permissionEnumeration,
@@ -70,7 +71,7 @@ export function* fetchDataPlaneParameters(permissionEnumeration: string) {
         });
 
         const sasToken = yield call(generateSharedAccessKey, {
-            durationInSeconds: 200,
+            durationInSeconds: 2000,
             sharedAccessAuthorizationRule,
         });
 
@@ -81,4 +82,25 @@ export function* fetchDataPlaneParameters(permissionEnumeration: string) {
     } catch (error) {
         throw new Error('Unable to retrieve necessary information for data plane call.  Please ensure a permission with is available.');
     }
+}
+
+export function* fetchServiceParametersSaga() {
+    const { hostName, sharedAccessAuthorizationRules } = yield select((state: StateInterface) => state.devices.serviceParameters);
+
+    if (hostName) {
+        return {
+            hostName,
+            sharedAccessAuthorizationRules
+        };
+    }
+
+    const result = {
+        hostName: yield call(getHostName),
+        sharedAccessAuthorizationRules: yield call(getSharedAccessAuthorizationRules)
+    };
+
+    // tslint:disable-next-line: no-console
+    console.log('blr' + result.hostName);
+    yield put(setServiceParametersAction(result));
+    return result;
 }

@@ -1,10 +1,11 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import { Map } from 'immutable';
-import { fetchDevicesAction, setDevicesEdgeConfigurationAction, setDeviceEdgeConfigurationAction } from './actions';
+import { fetchDevicesAction, setDevicesEdgeConfigurationAction, setDeviceEdgeConfigurationAction, setServiceParametersAction } from './actions';
 import { DevicesStateInterface, getInitialDevicesState } from './state';
 import { Device } from './models/device';
 import { DeviceEdgeConfiguration } from './models/deviceEdgeConfiguration';
 import { SynchronizationWrapper, SynchronizationStatus } from './models/synchronizationWrapper';
+import { SharedAccessAuthorizationRule } from './models/sharedAccessAuthorizationRule';
 
 export const devicesReducer = reducerWithInitialState<DevicesStateInterface>(getInitialDevicesState())
     .case(fetchDevicesAction.started, (state: DevicesStateInterface) => {
@@ -49,6 +50,13 @@ export const devicesReducer = reducerWithInitialState<DevicesStateInterface>(get
     .case(setDeviceEdgeConfigurationAction, (state: DevicesStateInterface, payload: { name: string, value: SynchronizationWrapper<DeviceEdgeConfiguration | undefined>}) => {
         const updatedState = {...state};
         updatedState.devicesEdgeConfiguration = updatedState.devicesEdgeConfiguration.set(payload.name, payload.value);
+
+        return updatedState;
+    })
+
+    .case(setServiceParametersAction, (state: DevicesStateInterface, payload: { hostName: string, sharedAccessAuthorizationRules: SharedAccessAuthorizationRule[]}) => {
+        const updatedState = {...state};
+        updatedState.serviceParameters = payload;
 
         return updatedState;
     });
