@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
-import { fetchDevicesAction, setDeviceEdgeConfigurationAction } from '../actions';
+import { fetchDevicesAction, setDevicesEdgeConfigurationAction } from '../actions';
 import { getHostName, getSharedAccessAuthorizationRules } from '../services/iotHubService';
 import { getDevices, getDeviceEdgeConfiguration } from '../services/deviceService';
 import { getCompatibleSharedAccessAuthorizationRule, generateSharedAccessKey } from '../helpers/sharedAccessKeyHelper';
@@ -45,11 +45,11 @@ export function* fetchSaga() {
         }
 
         yield put(fetchDevicesAction.done({ result: devices }));
-        yield put(setDeviceEdgeConfigurationAction(devicesEdgeConfigurationMap));
+        yield put(setDevicesEdgeConfigurationAction(devicesEdgeConfigurationMap));
         yield call(toast, 'Devices Loaded', { type: 'success' });
 
     } catch (error) {
         yield put(fetchDevicesAction.failed({error}));
-        yield call(toast, 'An error occurred', { type: 'error' });
+        yield call(toast, 'An error occurred.', { type: 'error' });
     }
 }

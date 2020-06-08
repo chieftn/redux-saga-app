@@ -1,15 +1,16 @@
-import { call, put } from 'redux-saga/effects';
+import { call, put, all } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
 import { cloneableGenerator } from '@redux-saga/testing-utils';
-import { fetchSaga } from './fetchSaga';
+import { fetchSagaAll, fetchDeviceEdgeConfigurationSaga } from './fetchSagaAll';
 import { fetchDevicesAction, setDevicesEdgeConfigurationAction } from '../actions';
 import { getHostName, getSharedAccessAuthorizationRules } from '../services/iotHubService';
 import { getDevices, getDeviceEdgeConfiguration } from '../services/deviceService';
 import { getCompatibleSharedAccessAuthorizationRule, generateSharedAccessKey } from '../helpers/sharedAccessKeyHelper';
 import { SynchronizationWrapper, SynchronizationStatus } from '../models/synchronizationWrapper';
 import { DeviceEdgeConfiguration } from '../models/deviceEdgeConfiguration';
+import { Device } from '../models/device';
 
-const fetchSagaGenerator = cloneableGenerator(fetchSaga)();
+const fetchSagaGenerator = cloneableGenerator(fetchSagaAll)();
 describe('fetchSaga', () => {
     it('yields call getHostName', () => {
         expect(fetchSagaGenerator.next()).toEqual({
@@ -80,30 +81,18 @@ describe('fetchSaga', () => {
         });
     });
 
-    it('yields call to getEdgeDeviceConfiguration', () => {
-        expect(fetchSagaGenerator.next(devices)).toEqual({
+    it('yields all to getEdgeDeviceConfiguration', () => {
+        expect(fetchSagaGenerator.next(devices)).toMatchObject({
             done: false,
-            value: call(getDeviceEdgeConfiguration, {
-                deviceName: devices[0].name,
-                hostName,
-                sasToken
-            })
-        });
-    });
-
-    it('yields call to getEdgeDeviceConfiguration - 2', () => {
-        expect(fetchSagaGenerator.next(deviceEdgeConfigurationMap.get('device1').payload)).toEqual({
-            done: false,
-            value: call(getDeviceEdgeConfiguration, {
-                deviceName: devices[1].name,
-                hostName,
-                sasToken
-            })
+            value: all(devices.map((device: Device) => fetchDeviceEdgeConfigurationSaga(device, sasToken, hostName)))
         });
     });
 
     it('yields put to fetchDevicesAction.done', () => {
-        expect(fetchSagaGenerator.next(deviceEdgeConfigurationMap.get('device2').payload)).toEqual({
+        expect(fetchSagaGenerator.next([
+            deviceEdgeConfigurationMap.get(devices[0].name),
+            deviceEdgeConfigurationMap.get(devices[1].name)
+        ])).toEqual({
             done: false,
             value: put(fetchDevicesAction.done({result: devices}))
         });

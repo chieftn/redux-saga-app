@@ -1,6 +1,6 @@
 import { call, put, all } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
-import { fetchDevicesAction, setDeviceEdgeConfigurationAction } from '../actions';
+import { fetchDevicesAction, setDevicesEdgeConfigurationAction } from '../actions';
 import { getHostName, getSharedAccessAuthorizationRules } from '../services/iotHubService';
 import { getDevices, getDeviceEdgeConfiguration } from '../services/deviceService';
 import { getCompatibleSharedAccessAuthorizationRule, generateSharedAccessKey } from '../helpers/sharedAccessKeyHelper';
@@ -29,20 +29,20 @@ export function* fetchSagaAll() {
         });
 
         const devicesEdgeConfigurationMap = new Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>();
-        const result: Array<SynchronizationWrapper<DeviceEdgeConfiguration>> = yield all(devices.map((device: Device) => getDeviceEdgeConfigurationSaga(device, sasToken, hostName)));
+        const result: Array<SynchronizationWrapper<DeviceEdgeConfiguration>> = yield all(devices.map((device: Device) => fetchDeviceEdgeConfigurationSaga(device, sasToken, hostName)));
         result.forEach(s => devicesEdgeConfigurationMap.set(s.payload.deviceName, s));
 
         yield put(fetchDevicesAction.done({ result: devices }));
-        yield put(setDeviceEdgeConfigurationAction(devicesEdgeConfigurationMap));
+        yield put(setDevicesEdgeConfigurationAction(devicesEdgeConfigurationMap));
         yield call(toast, 'Devices Loaded', { type: 'success' });
 
     } catch (error) {
-        yield put(fetchDevicesAction.failed(error));
-        yield call(toast, 'An Error occurred', { type: 'error' });
+        yield put(fetchDevicesAction.failed({error}));
+        yield call(toast, 'An error occurred.', { type: 'error' });
     }
 }
 
-export function* getDeviceEdgeConfigurationSaga(device: Device, sasToken: string, hostName: string) {
+export function* fetchDeviceEdgeConfigurationSaga(device: Device, sasToken: string, hostName: string) {
     const payload = yield call(getDeviceEdgeConfiguration, {
         deviceName: device.name,
         hostName,

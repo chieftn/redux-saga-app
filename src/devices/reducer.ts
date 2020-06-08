@@ -1,5 +1,5 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
-import { fetchDevicesAction, setDeviceEdgeConfigurationAction } from './actions';
+import { fetchDevicesAction, setDevicesEdgeConfigurationAction } from './actions';
 import { DevicesStateInterface, getInitialDevicesState } from './state';
 import { Device } from './models/device';
 import { DeviceEdgeConfiguration } from './models/deviceEdgeConfiguration';
@@ -39,7 +39,7 @@ export const devicesReducer = reducerWithInitialState<DevicesStateInterface>(get
         return updatedState;
     })
 
-    .case(setDeviceEdgeConfigurationAction, (state: DevicesStateInterface, payload: Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>) => {
+    .case(setDevicesEdgeConfigurationAction, (state: DevicesStateInterface, payload: Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>) => {
         const updatedState = {...state};
         updatedState.devicesEdgeConfiguration = payload;
         return updatedState;
