@@ -1,7 +1,7 @@
-import { takeEvery, takeLatest } from 'redux-saga/effects';
+import { takeEvery } from 'redux-saga/effects';
 import { fetchDevicesAction } from './actions';
-import { fetchDevicesSaga, fetchDevicesEdgeConfigurationSaga } from './sagas/fetchSagaBetter';
+import { fetchSaga  } from './sagas/fetchSaga';
+
 export default [
-    takeEvery(fetchDevicesAction.started.type, fetchDevicesSaga),
-    takeLatest(fetchDevicesAction.done.type, fetchDevicesEdgeConfigurationSaga )
+    takeEvery(fetchDevicesAction.started.type, fetchSaga),
 ];
