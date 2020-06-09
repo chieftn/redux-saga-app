@@ -67,9 +67,9 @@ export function* fetchDevicesEdgeConfigurationSaga() {
 
 export function* fetchDataPlaneParameters(permissionEnumeration: string) {
     try {
-        const { hostName, sharedAccessAuthorizationRules} = yield call(fetchServiceParametersSaga);
-        // const hostName: string = yield call(getHostName);
-        // const sharedAccessAuthorizationRules = yield call(getSharedAccessAuthorizationRules);
+        const hostName: string = yield call(getHostName);
+        const sharedAccessAuthorizationRules = yield call(getSharedAccessAuthorizationRules);
+        // const { hostName, sharedAccessAuthorizationRules} = yield call(fetchServiceParametersSaga);
 
         const sharedAccessAuthorizationRule = yield call(getCompatibleSharedAccessAuthorizationRule, {
             permissionEnumeration,
