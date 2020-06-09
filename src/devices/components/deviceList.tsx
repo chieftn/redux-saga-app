@@ -5,8 +5,8 @@ import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 import { Device } from '../models/device';
 import { fetchDevicesAction } from '../actions';
 import { StateInterface } from '../../redux/state';
-import './deviceList.css';
 import { SynchronizationStatus } from '../models/synchronizationWrapper';
+import './deviceList.css';
 
 export const DeviceList: React.FC = () => {
     const dispatch = useDispatch();

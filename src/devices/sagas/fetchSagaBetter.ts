@@ -63,7 +63,6 @@ export function* fetchDevicesEdgeConfigurationSaga() {
     );
 
     yield put(setDevicesEdgeConfigurationAction(devicesEdgeConfigurationMap));
-
 }
 
 export function* fetchDataPlaneParameters(permissionEnumeration: string) {
