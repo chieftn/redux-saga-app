@@ -65,13 +65,6 @@ export const DeviceEdgeConfiguration: React.FC<{deviceName: string}> = props => 
     const deviceEdgeConfigurationWrapper = devicesState.devicesEdgeConfiguration.get(deviceName);
     const deviceEdgeConfiguration = deviceEdgeConfigurationWrapper?.payload;
 
-    // tslint:disable-next-line: no-console
-    console.log(JSON.stringify(devicesState));
-    // tslint:disable-next-line: no-console
-    console.log(deviceEdgeConfigurationWrapper);
-    // tslint:disable-next-line: no-console
-    console.log(deviceEdgeConfigurationWrapper?.synchronizationStatus);
-
     if (deviceEdgeConfigurationWrapper &&
         deviceEdgeConfiguration &&
         deviceEdgeConfigurationWrapper.synchronizationStatus === SynchronizationStatus.fetched) {

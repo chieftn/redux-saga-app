@@ -29,7 +29,7 @@ export function* fetchSaga() {
             sasToken
         });
 
-        const devicesEdgeConfigurationMap = Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>();
+        let devicesEdgeConfigurationMap = Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>();
         for (const device of devices) {
             // tslint:disable-next-line: no-console
             console.log(`fetching edge configuration for ${device.name}`);
@@ -39,7 +39,7 @@ export function* fetchSaga() {
                 sasToken,
             });
 
-            devicesEdgeConfigurationMap.set(device.name, {
+            devicesEdgeConfigurationMap = devicesEdgeConfigurationMap.set(device.name, {
                 payload: deviceEdgeConfiguration,
                 synchronizationStatus: SynchronizationStatus.fetched
             });
