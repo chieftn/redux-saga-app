@@ -25,6 +25,17 @@ export function* fetchDevicesSaga() {
     }
 }
 
+export function* fetchDevicesEdgeConfigurationSaga() {
+    const devices: Device[] = yield select((state: StateInterface) => state.devices.devices.payload);
+    const result: Array<{ name: string, value: SynchronizationWrapper<DeviceEdgeConfiguration>}> = yield all(devices.map((device: Device) => fetchDeviceEdgeConfigurationSaga(device)));
+    const devicesEdgeConfigurationMap = Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>(
+        result.map(s => [s.name, s.value])
+    );
+
+    yield put(setDevicesEdgeConfigurationAction(devicesEdgeConfigurationMap));
+    yield call(toast, 'Devices Loaded', { type: 'success' });
+}
+
 export function* fetchDeviceEdgeConfigurationSaga(device: Device) {
     try {
         const { hostName, sasToken } = yield call(fetchDataPlaneParameters, 'read');
@@ -53,16 +64,6 @@ export function* fetchDeviceEdgeConfigurationSaga(device: Device) {
             }
         };
     }
-}
-
-export function* fetchDevicesEdgeConfigurationSaga() {
-    const devices: Device[] = yield select((state: StateInterface) => state.devices.devices.payload);
-    const result: Array<{ name: string, value: SynchronizationWrapper<DeviceEdgeConfiguration>}> = yield all(devices.map((device: Device) => fetchDeviceEdgeConfigurationSaga(device)));
-    const devicesEdgeConfigurationMap = Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>(
-        result.map(s => [s.name, s.value])
-    );
-
-    yield put(setDevicesEdgeConfigurationAction(devicesEdgeConfigurationMap));
 }
 
 export function* fetchDataPlaneParameters(permissionEnumeration: string) {
