@@ -8,6 +8,8 @@ import store from '../../redux/store';
 import { DeviceList } from '../../devices/components/deviceListPromise';
 // import { DeviceList } from '../../devices/components/deviceList';
 import { Device } from '../../devices/components/device';
+import { DetailsListExperiment } from './grid';
+import { Configuration } from '../../configuration2/components/configuration';
 import './application.css';
 
 export const Application: React.FC = () => {
@@ -21,6 +23,8 @@ export const Application: React.FC = () => {
                             <Switch>
                                 <Route path="/" component={DeviceList} exact={true} />
                                 <Route path="/devices/:id" component={Device} />
+                                <Route path="/grid" component={DetailsListExperiment} />
+                                <Route path="/form" component={Configuration} />
                             </Switch>
                         </BrowserRouter>
                     </div>
