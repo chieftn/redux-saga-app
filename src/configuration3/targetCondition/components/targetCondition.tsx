@@ -18,6 +18,7 @@ export const TargetCondition: React.FC<TargetConditionProps> = ({ targetConditio
 
     return (
         <div>
+            <div className="section-header">Target Condition</div>
             <TextField
                 name="Target Condition"
                 value={targetCondition}

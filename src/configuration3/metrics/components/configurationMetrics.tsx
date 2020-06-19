@@ -28,8 +28,14 @@ export const ConfigurationMetrics: React.FC<ConfigurationMetricsProps> = ({ metr
 
     return (
         <div>
-            <div>Configuration Metrics</div>
-            <div>{configurationMetrics}</div>
+            <div className="section-header">Configuration Metrics</div>
+            <div className="field-list">
+                <div className="field-list-row">
+                    <div className="field-list-col field-list-col-header">Name</div>
+                    <div className="field-list-col field-list-col-header">Criteria</div>
+                </div>
+                {configurationMetrics}
+            </div>
         </div>
     );
 };

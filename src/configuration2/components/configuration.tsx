@@ -18,6 +18,7 @@ import { setMetricNameAction, setMetricValueAction } from '../../configuration3/
 import { metricsReducer } from '../../configuration3/metrics/reducer';
 import { metricsSaga } from '../../configuration3/metrics/saga';
 import { ConfigurationMetrics } from '../../configuration3/metrics/components/configurationMetrics';
+import './configuration.css';
 
 export const Configuration: React.FC = () => {
     const [ localState, dispatch ] = useAsyncSagaReducer(configurationReducer, configurationSaga, configurationStateInitial());
@@ -59,14 +60,13 @@ export const Configuration: React.FC = () => {
     }
 
     return (
-        <div>
+        <div className="configuration-form">
             <TextField
                 label="Name"
                 value={localState.name}
                 onChange={onNameChange}
             />
 
-            <div>Labels</div>
             <ConfigurationLabels
                 labels={localState.labels}
                 labelsNameValidation={localState.labelsNameValidation}
@@ -77,7 +77,6 @@ export const Configuration: React.FC = () => {
 
             />
 
-            <div>Target Condition</div>
             {targetConditionState && (
                 <TargetCondition
                     targetConditionState={targetConditionState}

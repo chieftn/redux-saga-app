@@ -32,7 +32,16 @@ export const ConfigurationLabels: React.FC<ConfigurationLabelsProps> = ({ labels
     });
 
     return (
-        <div>{configurationLabels}</div>
+        <div>
+            <div className="section-header">Configuration Labels</div>
+            <div className="field-list">
+                <div className="field-list-row">
+                    <div className="field-list-col field-list-col-header">Name</div>
+                    <div className="field-list-col field-list-col-header">Value</div>
+                </div>
+                {configurationLabels}
+            </div>
+        </div>
     );
 };
 
@@ -65,20 +74,22 @@ export const ConfigurationLabel: React.FC<ConfigurationLabelProps> = ({ labelKey
     // };
 
     return (
-        <div>
-            <TextField
-                label="Name"
-                value={labelName}
-                onChange={onLabelNameTextChange}
-                errorMessage={labelNameValidation && t(labelNameValidation) || ''}
-            />
+        <div className="field-list-row">
+            <div className="field-list-col">
+                <TextField
+                    value={labelName}
+                    onChange={onLabelNameTextChange}
+                    errorMessage={labelNameValidation && t(labelNameValidation) || ''}
+                />
+            </div>
 
-            <TextField
-                label="Value"
-                value={labelValue}
-                onChange={onLabelValueTextChange}
-                errorMessage={labelValueValidation && t(labelValueValidation) || ''}
-            />
+            <div className="field-list-col">
+                <TextField
+                    value={labelValue}
+                    onChange={onLabelValueTextChange}
+                    errorMessage={labelValueValidation && t(labelValueValidation) || ''}
+                />
+            </div>
         </div>
     );
 };

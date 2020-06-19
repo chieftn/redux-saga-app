@@ -29,20 +29,22 @@ export const ConfigurationMetric: React.FC<ConfigurationMetricProps> = ({ metric
     // };
 
     return (
-        <div>
-            <TextField
-                label="Name"
-                value={metricName}
-                onChange={onMetricNameTextChange}
-                errorMessage={metricNameValidation && t(metricNameValidation) || ''}
-            />
+        <div className="field-list-row">
+            <div className="field-list-col">
+                <TextField
+                    value={metricName}
+                    onChange={onMetricNameTextChange}
+                    errorMessage={metricNameValidation && t(metricNameValidation) || ''}
+                />
+            </div>
 
-            <TextField
-                label="Value"
-                value={metricValue}
-                onChange={onMetricValueTextChange}
-                errorMessage={metricValueValidation && t(metricValueValidation) || ''}
-            />
+            <div className="field-list-col">
+                <TextField
+                    value={metricValue}
+                    onChange={onMetricValueTextChange}
+                    errorMessage={metricValueValidation && t(metricValueValidation) || ''}
+                />
+            </div>
         </div>
     );
 };
