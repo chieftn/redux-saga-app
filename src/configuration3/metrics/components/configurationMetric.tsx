@@ -11,7 +11,7 @@ export interface ConfigurationMetricProps {
     onMetricValueChange(key: string, value: string): void;
 }
 
-export const ConfigurationMetric: React.FC<MetricProps> = ({ metricKey, metricName, metricValue, metricNameValidation, metricValueValidation, onMetricNameChange, onMetricValueChange }) => {
+export const ConfigurationMetric: React.FC<ConfigurationMetricProps> = ({ metricKey, metricName, metricValue, metricNameValidation, metricValueValidation, onMetricNameChange, onMetricValueChange }) => {
     const t = (localizationKey: string) => {
         return localizationKey;
     };

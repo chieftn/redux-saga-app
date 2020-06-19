@@ -13,11 +13,11 @@ import { targetConditionReducer } from '../../configuration3/targetCondition/red
 import { targetConditionSaga } from '../../configuration3/targetCondition/saga';
 import { targetConditionInitialState } from '../../configuration3/targetCondition/state';
 
-
-import { configuratio} from '../../configuration3/metrics/state';
-import { } from '../../configuration3/metrics/actions';
-import { } from '../../configuration3/metrics/reducer';
-import { } from '../'
+import { metricsInitialState } from '../../configuration3/metrics/state';
+import { setMetricNameAction, setMetricValueAction } from '../../configuration3/metrics/actions';
+import { metricsReducer } from '../../configuration3/metrics/reducer';
+import { metricsSaga } from '../../configuration3/metrics/saga';
+import { ConfigurationMetrics } from '../../configuration3/metrics/components/configurationMetrics';
 
 export const Configuration: React.FC = () => {
     const [ localState, dispatch ] = useAsyncSagaReducer(configurationReducer, configurationSaga, configurationStateInitial());
@@ -27,6 +27,7 @@ export const Configuration: React.FC = () => {
     };
 
     const [ targetConditionState, dispatchTargetConditionState ] = useAsyncSagaReducer(targetConditionReducer, targetConditionSaga, targetConditionInitialState());
+    const [ metricsState, dispatchMetricsState ] = useAsyncSagaReducer(metricsReducer, metricsSaga, metricsInitialState());
 
     const onTargetConditionChange = (value: string) => {
         dispatchTargetConditionState(setTargetConditionAction(value));
@@ -42,6 +43,15 @@ export const Configuration: React.FC = () => {
 
     const onLabelDelete = (key: string) => {
         dispatch(removeLabelAction(key));
+    };
+
+    const onMetricNameChange = (key: string, value: string) => {
+        dispatchMetricsState(setMetricNameAction({key, value}));
+
+    };
+
+    const onMetricValueChange = (key: string, value: string) => {
+        dispatchMetricsState(setMetricValueAction({key, value}));
     };
 
     if (!localState) {
@@ -72,6 +82,16 @@ export const Configuration: React.FC = () => {
                 <TargetCondition
                     targetConditionState={targetConditionState}
                     onTargetConditionChange={onTargetConditionChange}
+                />
+            )}
+
+            {metricsState && (
+                <ConfigurationMetrics
+                    metrics={metricsState.metrics}
+                    metricsNameValidation={metricsState.metricsNameValidation}
+                    metricsValueValidation={metricsState.metricsValueValidation}
+                    onMetricNameChange={onMetricNameChange}
+                    onMetricValueChange={onMetricValueChange}
                 />
             )}
 

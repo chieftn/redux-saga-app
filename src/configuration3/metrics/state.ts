@@ -12,7 +12,7 @@ export interface MetricsStateInterface {
     metricsNameValidation: StringMap<string>;
     metricsValueValidation: StringMap<string>;
     metricsLastKey: number;
-};
+}
 
 export const metricsInitialState = () => {
     return {
@@ -27,4 +27,3 @@ export const metricsInitialState = () => {
         metricsValueValidation: {}
     };
 };
-

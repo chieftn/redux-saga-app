@@ -7,7 +7,7 @@ import {
     setMetricValueValidationAction
 } from './actions';
 
-export const targetConditionReducer = reducerWithInitialState<MetricsStateInterface>(metricsInitialState())
+export const metricsReducer = reducerWithInitialState<MetricsStateInterface>(metricsInitialState())
     .case(setMetricNameAction, (state: MetricsStateInterface, payload: {key: string, value: string}) => {
         const updatedState = {...state};
         updatedState.metrics = {...updatedState.metrics};
@@ -50,8 +50,8 @@ export const targetConditionReducer = reducerWithInitialState<MetricsStateInterf
     })
     .case(setMetricValueValidationAction, (state: MetricsStateInterface, payload: {key: string, value: string}) => {
         const updatedState = {...state};
-        updatedState.metricsNameValidation = {...updatedState.metricsValueValidation};
-        updatedState.metricsNameValidation[payload.key] = payload.value;
+        updatedState.metricsValueValidation = {...updatedState.metricsValueValidation};
+        updatedState.metricsValueValidation[payload.key] = payload.value;
 
         return updatedState;
     });

@@ -6,7 +6,7 @@ import { validateAllMetricsSaga } from './sagas/validateAllMetricsSaga';
 
 const debounceDelay = 800;
 
-export function* targetConditionSaga() {
+export function* metricsSaga() {
     yield all([
         debounce(debounceDelay, setMetricNameAction.type, validateMetricNameSaga),
         debounce(debounceDelay, setMetricValueAction.type, validateMetricValueSaga),

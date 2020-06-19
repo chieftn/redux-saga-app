@@ -10,7 +10,7 @@ export interface ConfigurationMetricsProps {
     onMetricValueChange(key: string, value: string): void;
 }
 
-export const Configurationmetrics: React.FC<ConfigurationMetricsProps> = ({ metrics, metricsNameValidation, metricsValueValidation, onMetricValueChange, onMetricNameChange }) => {
+export const ConfigurationMetrics: React.FC<ConfigurationMetricsProps> = ({ metrics, metricsNameValidation, metricsValueValidation, onMetricValueChange, onMetricNameChange }) => {
     const configurationMetrics = Object.keys(metrics).map((key: string) => {
         return (
             <ConfigurationMetric
@@ -18,8 +18,8 @@ export const Configurationmetrics: React.FC<ConfigurationMetricsProps> = ({ metr
                 metricKey={key}
                 metricName={metrics[key].name}
                 metricValue={metrics[key].value}
-                metricsNameValidation={metricsNameValidation[key]}
-                metricsValueValidation={metricsValueValidation[key]}
+                metricNameValidation={metricsNameValidation[key]}
+                metricValueValidation={metricsValueValidation[key]}
                 onMetricNameChange={onMetricNameChange}
                 onMetricValueChange={onMetricValueChange}
             />
