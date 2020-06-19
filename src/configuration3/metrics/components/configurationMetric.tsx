@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
+import { IconButton } from 'office-ui-fabric-react/lib/Button';
 
 export interface ConfigurationMetricProps {
+    canRemove: boolean;
     metricKey: string;
     metricName: string;
     metricValue: string;
@@ -9,9 +11,11 @@ export interface ConfigurationMetricProps {
     metricValueValidation?: string;
     onMetricNameChange(key: string, value: string): void;
     onMetricValueChange(key: string, value: string): void;
+    onMetricDelete(key: string): void;
 }
 
-export const ConfigurationMetric: React.FC<ConfigurationMetricProps> = ({ metricKey, metricName, metricValue, metricNameValidation, metricValueValidation, onMetricNameChange, onMetricValueChange }) => {
+// tslint:disable-next-line: cyclomatic-complexity
+export const ConfigurationMetric: React.FC<ConfigurationMetricProps> = ({ canRemove, metricKey, metricName, metricValue, metricNameValidation, metricValueValidation, onMetricDelete, onMetricNameChange, onMetricValueChange }) => {
     const t = (localizationKey: string) => {
         return localizationKey;
     };
@@ -24,9 +28,9 @@ export const ConfigurationMetric: React.FC<ConfigurationMetricProps> = ({ metric
         onMetricValueChange(metricKey, newValue || '');
     };
 
-    // const onLabelDeleteClick = () => {
-    //     onLabelDelete(key);
-    // };
+    const onMetricDeleteClick = () => {
+        onMetricDelete(metricKey);
+    };
 
     return (
         <div className="field-list-row">
@@ -44,6 +48,15 @@ export const ConfigurationMetric: React.FC<ConfigurationMetricProps> = ({ metric
                     onChange={onMetricValueTextChange}
                     errorMessage={metricValueValidation && t(metricValueValidation) || ''}
                 />
+            </div>
+
+            <div className="field-list-col-command">
+                {canRemove && (
+                    <IconButton
+                        iconProps={{ iconName: 'Delete' }}
+                        onClick={onMetricDeleteClick}
+                    />
+                )}
             </div>
         </div>
     );

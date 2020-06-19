@@ -14,7 +14,7 @@ import { targetConditionSaga } from '../../configuration3/targetCondition/saga';
 import { targetConditionInitialState } from '../../configuration3/targetCondition/state';
 
 import { metricsInitialState } from '../../configuration3/metrics/state';
-import { setMetricNameAction, setMetricValueAction } from '../../configuration3/metrics/actions';
+import { setMetricNameAction, setMetricValueAction, removeMetricAction } from '../../configuration3/metrics/actions';
 import { metricsReducer } from '../../configuration3/metrics/reducer';
 import { metricsSaga } from '../../configuration3/metrics/saga';
 import { ConfigurationMetrics } from '../../configuration3/metrics/components/configurationMetrics';
@@ -55,6 +55,10 @@ export const Configuration: React.FC = () => {
         dispatchMetricsState(setMetricValueAction({key, value}));
     };
 
+    const onMetricDelete = (key: string) => {
+        dispatchMetricsState(removeMetricAction(key));
+    };
+
     if (!localState) {
         return <div>Hello</div>;
     }
@@ -91,6 +95,7 @@ export const Configuration: React.FC = () => {
                     metricsValueValidation={metricsState.metricsValueValidation}
                     onMetricNameChange={onMetricNameChange}
                     onMetricValueChange={onMetricValueChange}
+                    onMetricDelete={onMetricDelete}
                 />
             )}
 

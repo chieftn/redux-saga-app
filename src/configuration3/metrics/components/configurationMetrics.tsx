@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { StringMap, Metric } from '../state';
+import { StringMap } from '../../../devices/models/stringMap';
+import { Metric } from '../models/metric';
 import { ConfigurationMetric } from './configurationMetric';
 
 export interface ConfigurationMetricsProps {
@@ -8,12 +9,15 @@ export interface ConfigurationMetricsProps {
     metricsValueValidation: StringMap<string>;
     onMetricNameChange(key: string, value: string): void;
     onMetricValueChange(key: string, value: string): void;
+    onMetricDelete(key: string): void;
 }
 
-export const ConfigurationMetrics: React.FC<ConfigurationMetricsProps> = ({ metrics, metricsNameValidation, metricsValueValidation, onMetricValueChange, onMetricNameChange }) => {
-    const configurationMetrics = Object.keys(metrics).map((key: string) => {
+export const ConfigurationMetrics: React.FC<ConfigurationMetricsProps> = ({ metrics, metricsNameValidation, metricsValueValidation, onMetricDelete, onMetricValueChange, onMetricNameChange }) => {
+    const lastIndex = Object.keys(metrics).length - 1;
+    const configurationMetrics = Object.keys(metrics).map((key: string, index) => {
         return (
             <ConfigurationMetric
+                canRemove={index !== lastIndex}
                 key={key}
                 metricKey={key}
                 metricName={metrics[key].name}
@@ -22,6 +26,7 @@ export const ConfigurationMetrics: React.FC<ConfigurationMetricsProps> = ({ metr
                 metricValueValidation={metricsValueValidation[key]}
                 onMetricNameChange={onMetricNameChange}
                 onMetricValueChange={onMetricValueChange}
+                onMetricDelete={onMetricDelete}
             />
         );
     });

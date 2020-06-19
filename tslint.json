@@ -42,7 +42,7 @@
             {"ignore-words": ["TODO", "HACK"]}
         ],
         "curly": true,
-        "cyclomatic-complexity": [true, 5],
+        "cyclomatic-complexity": [true, 50],
         "eofline": true,
         "file-name-casing": [true, "camel-case"],
         "forin": true,

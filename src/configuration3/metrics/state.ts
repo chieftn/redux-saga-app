@@ -1,11 +1,5 @@
-export interface StringMap<T> {
-    [key: string]: T;
-}
-
-export interface Metric {
-    name: string;
-    value: string;
-}
+import { StringMap } from '../../devices/models/stringMap';
+import { Metric } from './models/metric';
 
 export interface MetricsStateInterface {
     metrics: StringMap<Metric>;

@@ -19,14 +19,12 @@
 }
 .field-list-col-command {
     width: 30px;
+    padding-bottom: 8px;
 }
 .field-list-col-header {
     text-transform: uppercase;
     font-weight: 700;
     font-size: 10px;
-}
-.field-list-col0command {
-    padding-bottom: 8px;
 }
 
 .section-header {

@@ -1,12 +1,22 @@
 import actionCreatorFactory from 'typescript-fsa';
-import { StringMap } from './state';
 
 const METRIC = 'METRIC';
 const actionCreator = actionCreatorFactory(METRIC);
 
+export interface KeyValue {
+    key: string;
+    value: string;
+}
+
+export interface ValidationResult {
+    nameValidations: KeyValue[];
+    valueValidations: KeyValue[];
+}
+
 export const removeMetricAction = actionCreator<string>('REMOVE');
-export const setMetricNameAction = actionCreator<{ key: string, value: string}>('_NAME/SET');
-export const setMetricValueAction = actionCreator<{ key: string, value: string}>('_VALUE/SET');
-export const setMetricNameValidationAction = actionCreator<{key: string, value: string}>('_NAME_VALIDATION/SET');
-export const setMetricValueValidationAction = actionCreator<{key: string, value: string}>('_VALUE_VALIDATION/SET');
-export const validateMetricsAction = actionCreator.async<void, StringMap<string>, string>('VALIDATE');
+export const setMetricNameAction = actionCreator<KeyValue>('_NAME/SET');
+export const setMetricValueAction = actionCreator<KeyValue>('_VALUE/SET');
+export const setMetricNameDuplicatesAction = actionCreator<Set<string>>('_NAME_DUPLICATE/SET');
+export const setMetricNameValidationAction = actionCreator<KeyValue[]>('_NAME_VALIDATION/SET');
+export const setMetricValueValidationAction = actionCreator<KeyValue[]>('_VALUE_VALIDATION/SET');
+export const validateMetricsAction = actionCreator.async<void, ValidationResult, string>('VALIDATE');

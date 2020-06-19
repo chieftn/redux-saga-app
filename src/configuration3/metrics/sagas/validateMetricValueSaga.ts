@@ -1,16 +1,23 @@
 import { Action } from 'typescript-fsa';
-import { put } from 'redux-saga/effects';
-import { setMetricValueValidationAction } from '../actions';
+import { put, select } from 'redux-saga/effects';
+import { setMetricNameValidationAction, setMetricValueValidationAction } from '../actions';
+import { blankValidationKey } from '../contants';
+import { MetricsStateInterface } from '../state';
 
 export function* validateMetricValueSaga(action: Action<{key: string, value: string}>) {
     let validationKey = '';
 
-    try {
-        if (!action.payload.value) {
-            validationKey = 'blank is not allowed';
+    if (!action.payload.value) {
+        const { metricsLastKey, metrics} = yield select((state: MetricsStateInterface) => state);
+
+        if (action.payload.key === metricsLastKey.toString() && !metrics[action.payload.key].name) {
+            yield put(setMetricNameValidationAction([{ key: action.payload.key, value: validationKey}]));
+            yield put(setMetricValueValidationAction([{ key: action.payload.key, value: validationKey}]));
+            return;
         }
 
-    } finally {
-        yield put(setMetricValueValidationAction({ key: action.payload.key, value: validationKey}));
+        validationKey = blankValidationKey;
     }
+
+    yield put(setMetricValueValidationAction([{ key: action.payload.key, value: validationKey}]));
 }
