@@ -1,0 +1,6 @@
+export enum ConfigurationScenario {
+    NONE,
+    EDGE_CONFIGURATION,
+    MODULE_TWIN_CONFIGURATION,
+    DEVICE_TWIN_CONFIGURATION
+}
