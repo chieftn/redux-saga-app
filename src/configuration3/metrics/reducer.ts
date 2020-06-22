@@ -1,5 +1,5 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
-import { metricsInitialState, MetricsStateInterface } from './state';
+import { metricsInitialState, MetricsState } from './state';
 import { maxMetricCount, duplicationValidationKey } from './contants';
 import {
     KeyValue,
@@ -11,8 +11,8 @@ import {
     removeMetricAction
 } from './actions';
 
-export const metricsReducer = reducerWithInitialState<MetricsStateInterface>(metricsInitialState())
-    .case(setMetricNameAction, (state: MetricsStateInterface, payload: {key: string, value: string}) => {
+export const metricsReducer = reducerWithInitialState<MetricsState>(metricsInitialState())
+    .case(setMetricNameAction, (state: MetricsState, payload: {key: string, value: string}) => {
         const updatedState = {...state};
         updatedState.metrics = {...updatedState.metrics};
         updatedState.metrics[payload.key] = { name: payload.value, value: updatedState.metrics[payload.key].value };
@@ -32,7 +32,7 @@ export const metricsReducer = reducerWithInitialState<MetricsStateInterface>(met
 
         return updatedState;
     })
-    .case(setMetricValueAction, (state: MetricsStateInterface, payload: {key: string, value: string}) => {
+    .case(setMetricValueAction, (state: MetricsState, payload: {key: string, value: string}) => {
         const updatedState = {...state};
         updatedState.metrics = {...updatedState.metrics};
         updatedState.metrics[payload.key] = { name: updatedState.metrics[payload.key].name, value: payload.value};
@@ -52,21 +52,21 @@ export const metricsReducer = reducerWithInitialState<MetricsStateInterface>(met
 
         return updatedState;
     })
-    .case(setMetricNameValidationAction, (state: MetricsStateInterface, payload: KeyValue[]) => {
+    .case(setMetricNameValidationAction, (state: MetricsState, payload: KeyValue[]) => {
         const updatedState = {...state};
         updatedState.metricsNameValidation = {...updatedState.metricsNameValidation};
         payload.forEach(keyValue => updatedState.metricsNameValidation[keyValue.key] = keyValue.value);
 
         return updatedState;
     })
-    .case(setMetricValueValidationAction, (state: MetricsStateInterface, payload: KeyValue[]) => {
+    .case(setMetricValueValidationAction, (state: MetricsState, payload: KeyValue[]) => {
         const updatedState = {...state};
         updatedState.metricsValueValidation = {...updatedState.metricsValueValidation};
         payload.forEach(keyValue => updatedState.metricsValueValidation[keyValue.key] = keyValue.value);
 
         return updatedState;
     })
-    .case(removeMetricAction, (state: MetricsStateInterface, payload: string) => {
+    .case(removeMetricAction, (state: MetricsState, payload: string) => {
         const updatedState = {...state};
         updatedState.metrics = {...updatedState.metrics};
 
@@ -85,7 +85,7 @@ export const metricsReducer = reducerWithInitialState<MetricsStateInterface>(met
         delete(updatedState.metrics[payload]);
         return updatedState;
     })
-    .case(setMetricNameDuplicatesAction, (state: MetricsStateInterface, payload: Set<string>) => {
+    .case(setMetricNameDuplicatesAction, (state: MetricsState, payload: Set<string>) => {
         const updatedState = {...state};
         updatedState.metricsNameValidation = {...updatedState.metricsNameValidation};
 

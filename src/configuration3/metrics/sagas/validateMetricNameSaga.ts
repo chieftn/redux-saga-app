@@ -1,25 +1,34 @@
 import { Action } from 'typescript-fsa';
 import { put, call, select } from 'redux-saga/effects';
+import { Metric } from '../models/metric';
+import { StringMap } from '../../../devices/models/stringMap';
 import { setMetricNameValidationAction, setMetricValueValidationAction } from '../actions';
-import { validateMetricSetSaga } from './validateMetricSetSaga';
+import { validateMetricNameDuplicatesSaga } from './validateMetricNameDuplicatesSaga';
 import { blankValidationKey } from '../contants';
-import { MetricsStateInterface } from '../state';
+import { MetricsState } from '../state';
 
 export function* validateMetricNameSaga(action: Action<{key: string, value: string}>) {
-    let validationKey = '';
-    const { metricsLastKey, metrics} = yield select((state: MetricsStateInterface) => state);
+    // tslint:disable-next-line: no-console
+    console.log('action: ' + action.type);
 
-    if (!action.payload.value) {
-        if (action.payload.key === metricsLastKey.toString() && !metrics[action.payload.key].value) {
-            yield put(setMetricNameValidationAction([{ key: action.payload.key, value: validationKey}]));
-            yield put(setMetricValueValidationAction([{ key: action.payload.key, value: validationKey}]));
-            yield call(validateMetricSetSaga);
+    const { metricsLastKey, metrics} = yield select((state: MetricsState) => state);
+
+    yield call(validateMetricName, action.payload.key, action.payload.value, metrics, metricsLastKey);
+    yield call(validateMetricNameDuplicatesSaga);
+}
+
+export function* validateMetricName(key: string, metricName: string, metrics: StringMap<Metric>, metricsLastKey: string) {
+    let validationKey = '';
+
+    if (!metricName) {
+        if (key === metricsLastKey.toString() && !metrics[key].value) {
+            yield put(setMetricNameValidationAction([{ key, value: validationKey}]));
+            yield put(setMetricValueValidationAction([{ key, value: validationKey}]));
             return;
         }
 
         validationKey = blankValidationKey;
     }
 
-    yield put(setMetricNameValidationAction([{ key: action.payload.key, value: validationKey}]));
-    yield call(validateMetricSetSaga);
+    yield put(setMetricNameValidationAction([{ key, value: validationKey}]));
 }

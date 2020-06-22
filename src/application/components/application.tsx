@@ -9,7 +9,7 @@ import { DeviceList } from '../../devices/components/deviceListPromise';
 // import { DeviceList } from '../../devices/components/deviceList';
 import { Device } from '../../devices/components/device';
 import { DetailsListExperiment } from './grid';
-import { Configuration } from '../../configuration2/components/configuration';
+import { Configuration } from '../../configuration3/configurationEntry/components/configuration';
 import './application.css';
 
 export const Application: React.FC = () => {

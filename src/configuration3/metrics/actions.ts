@@ -1,6 +1,6 @@
 import actionCreatorFactory from 'typescript-fsa';
 
-const METRIC = 'METRIC';
+export const METRIC = 'METRIC';
 const actionCreator = actionCreatorFactory(METRIC);
 
 export interface KeyValue {

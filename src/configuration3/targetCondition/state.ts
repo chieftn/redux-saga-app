@@ -18,7 +18,7 @@ export interface TargetConditionState {
     targetEntriesNextToken: string;
 }
 
-export const targetConditionInitialState = () => {
+export const targetConditionInitialState = (): TargetConditionState => {
     return {
         targetCondition: '',
         targetConditionValidation: '',
