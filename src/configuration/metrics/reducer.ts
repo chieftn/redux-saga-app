@@ -86,9 +86,6 @@ export const metricsReducer = reducerWithoutInitialState<MetricsState>()
         return updatedState;
     })
     .case(setMetricNameDuplicatesAction, (state: MetricsState, payload: Set<string>) => {
-        // tslint:disable-next-line: no-console
-        console.log('here' + payload.has('a'));
-
         const updatedState = {...state};
         updatedState.metricsNameValidation = {...updatedState.metricsNameValidation};
 

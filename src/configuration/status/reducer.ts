@@ -17,8 +17,6 @@ export const configurationStatusReducer = reducerWithoutInitialState<Configurati
         return updatedState;
     })
     .case(initializeConfigurationAction.done, (state: ConfigurationEntryStatusState) => {
-        // tslint:disable-next-line: no-console
-        console.log('here we are');
         const updatedState = {...state};
         updatedState.formStateError = undefined;
         updatedState.formState = FormState.INITIALIZED;

@@ -1,4 +1,4 @@
-import { select, put, delay } from 'redux-saga/effects';
+import { select, put } from 'redux-saga/effects';
 import { validateTargetConditionAction } from '../actions';
 import { TargetConditionState } from '../state';
 
@@ -9,11 +9,12 @@ export function* validateTargetConditionStartSaga() {
 export function* validateTargetConditionSaga() {
   try {
     const targetCondition = yield select((state: TargetConditionState) => state.targetCondition);
-    // tslint:disable-next-line: no-console
-    console.log(`validating ${targetCondition}`);
 
-    // tslint:disable-next-line: no-magic-numbers
-    yield delay(2000);
+    if (!targetCondition) {
+      yield put(validateTargetConditionAction.done({
+        result: 'blank'
+      }));
+    }
 
     yield put(validateTargetConditionAction.done({
       result: targetCondition === 'asdf' ? 'badValue' : '' // empty implies successful validation

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
 import { useAsyncSagaReducer } from '../hooks/useAsyncSagaReducer';
 import { configurationEntryReducer } from '../reducer';
 import { configurationEntrySagas } from '../sagas';
@@ -7,7 +8,7 @@ import { TargetCondition } from '../targetCondition/components/targetCondition';
 import { ConfigurationMetrics } from '../metrics/components/configurationMetrics';
 import { setTargetConditionAction } from '../targetCondition/actions';
 import { setMetricNameAction, setMetricValueAction, removeMetricAction } from '../metrics/actions';
-import { initializeConfigurationAction } from '../status/actions';
+import { initializeConfigurationAction, validateConfigurationAction } from '../status/actions';
 import { FormState } from '../status/models/formState';
 import './configuration.css';
 
@@ -18,9 +19,6 @@ export const Configuration: React.FC = () => {
     React.useEffect(() => {
         dispatch(initializeConfigurationAction.started());
     }, []);  // tslint:disable-line: align
-
-    // tslint:disable-next-line: no-console
-    console.log('rendering' + JSON.stringify(configurationEntryStatusState));
 
     const onTargetConditionChange = (value: string) => {
         dispatch(setTargetConditionAction(value));
@@ -36,6 +34,10 @@ export const Configuration: React.FC = () => {
 
     const onMetricDelete = (key: string) => {
         dispatch(removeMetricAction(key));
+    };
+
+    const onSubmitClick = () => {
+        dispatch(validateConfigurationAction.started());
     };
 
     if (configurationEntryStatusState.formState === FormState.INITIALIZING) {
@@ -65,6 +67,11 @@ export const Configuration: React.FC = () => {
                     onMetricDelete={onMetricDelete}
                 />
             )}
+
+            <PrimaryButton
+                text="Submit"
+                onClick={onSubmitClick}
+            />
         </div>
     );
 };
