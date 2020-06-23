@@ -1,29 +1,32 @@
-import { select, put } from 'redux-saga/effects';
+import { Action } from 'typescript-fsa';
+import { put, call } from 'redux-saga/effects';
 import { validateTargetConditionAction } from '../actions';
-import { TargetConditionState } from '../state';
 
-export function* validateTargetConditionStartSaga() {
-  yield put(validateTargetConditionAction.started());
+export function* validateTargetConditionSaga(action: Action<string>) {
+    yield call(validateTargetCondition, action.payload, true);
 }
 
-export function* validateTargetConditionSaga() {
+export function* validateTargetCondition(targetCondition: string, serverValidation: boolean) {
+  let validationKey = '';
+
   try {
-    const targetCondition = yield select((state: TargetConditionState) => state.targetCondition);
-
     if (!targetCondition) {
-      yield put(validateTargetConditionAction.done({
-        result: 'blank'
-      }));
-
+      validationKey = 'blank';
       return;
     }
 
+    if (serverValidation) {
+       // const result = yield call serverValidation;
+       validationKey = targetCondition === 'a' ? 'badServerValidation' : '';
+    }
+
     yield put(validateTargetConditionAction.done({
-      result: targetCondition === 'asdf' ? 'badValue' : '' // empty implies successful validation
+      result: validationKey// empty implies successful validation
     }));
+
   } catch (error) {
     yield put(validateTargetConditionAction.failed({
-      error: 'unableToValidateKey'
+      error: validationKey// empty implies successful validation
     }));
   }
 }

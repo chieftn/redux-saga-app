@@ -1,12 +1,11 @@
-import { debounce, takeLatest } from 'redux-saga/effects';
-import { setTargetConditionAction, validateTargetConditionAction } from './actions';
-import { validateTargetConditionSaga, validateTargetConditionStartSaga } from './sagas/validateTargetConditionSaga';
+import { debounce } from 'redux-saga/effects';
+import { setTargetConditionAction } from './actions';
+import { validateTargetConditionSaga } from './sagas/validateTargetConditionSaga';
 
 const debounceDelay = 800;
 
 export const targetConditionSagas = () => {
     return [
-        debounce(debounceDelay, setTargetConditionAction.type, validateTargetConditionStartSaga),
-        takeLatest(validateTargetConditionAction.started.type, validateTargetConditionSaga)
+        debounce(debounceDelay, setTargetConditionAction.type, validateTargetConditionSaga),
     ];
 };

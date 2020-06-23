@@ -17,9 +17,6 @@ export function* validateMetricNameSaga(action: Action<{key: string, value: stri
 
 export function* validateMetricName(key: string, metricName: string, metrics: StringMap<Metric>, metricsLastKey: string) {
     let validationKey = '';
-    // tslint:disable-next-line: no-console
-    console.log('here we are 1');
-
     try {
         if (!metricName) {
             if (key === metricsLastKey.toString() && !metrics[key].value) {

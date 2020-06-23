@@ -8,8 +8,6 @@ export function* validateMetricNameDuplicatesSaga(action?: Action<string>) {
     const metrics = {...yield select((state: { metricsState: MetricsState}) => state.metricsState.metrics)};
 
     if (action) {
-        // tslint:disable-next-line: no-console
-        console.log('deleting');
         // if the validation triggered by a delete action -- that entry is no longer part of the set.
         delete(metrics[action.payload]);
     }

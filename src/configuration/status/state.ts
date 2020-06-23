@@ -8,6 +8,7 @@ export interface ConfigurationEntryStatusState {
     configurationScenario: ConfigurationScenario;
     formState: FormState;
     formStateError?: ErrorReport;
+    formIsDirty?: boolean;
 }
 
 export const configurationEntryStatusStateInitial = (): ConfigurationEntryStatusState => {

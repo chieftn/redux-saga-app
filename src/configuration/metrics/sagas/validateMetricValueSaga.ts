@@ -14,13 +14,8 @@ export function* validateMetricValueSaga(action: Action<{key: string, value: str
 
 export function* validateMetricValue(key: string, metricValue: string, metrics: StringMap<Metric>, metricsLastKey: string, serverValidation: boolean = false) {
     let validationKey = '';
-    // tslint:disable-next-line: no-console
-    console.log('here we are 2');
-
     try {
         if (!metricValue) {
-            // tslint:disable-next-line: no-console
-            console.log('here we go');
             if (key === metricsLastKey.toString() && !metrics[key].name) {
                 yield put(setMetricNameValidationAction([{ key, value: validationKey}]));
                 yield put(setMetricValueValidationAction([{ key, value: validationKey}]));
@@ -33,13 +28,12 @@ export function* validateMetricValue(key: string, metricValue: string, metrics: 
 
         if (serverValidation) {
             // const result = yield call serverValidation;
-            validationKey = 'badServerValidation';
+            validationKey = metricValue === 'a' ? 'badServerValidation' : '';
         }
     }
     catch (error) {
         validationKey = 'unableToValidate';
-    }
-    finally {
+    } finally {
         yield put(setMetricValueValidationAction([{ key, value: validationKey}]));
     }
 }

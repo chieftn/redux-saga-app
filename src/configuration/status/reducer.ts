@@ -4,7 +4,8 @@ import { ErrorReport } from './models/errorReport';
 import {
     initializeConfigurationAction,
     submitConfigurationAction,
-    validateConfigurationAction
+    validateConfigurationAction,
+    setDirtyFlagAction
 } from './actions';
 import { FormState } from './models/formState';
 
@@ -70,5 +71,10 @@ export const configurationStatusReducer = reducerWithoutInitialState<Configurati
         updatedState.formStateError = payload.error;
         updatedState.formState = FormState.ERROR_SUBMITTING;
 
+        return updatedState;
+    })
+    .case(setDirtyFlagAction, (state: ConfigurationEntryStatusState) => {
+        const updatedState = {...state};
+        updatedState.formIsDirty = !updatedState.formIsDirty;
         return updatedState;
     });
