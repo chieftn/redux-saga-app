@@ -14,12 +14,13 @@ export function* validateTargetConditionSaga() {
       yield put(validateTargetConditionAction.done({
         result: 'blank'
       }));
+
+      return;
     }
 
     yield put(validateTargetConditionAction.done({
       result: targetCondition === 'asdf' ? 'badValue' : '' // empty implies successful validation
     }));
-
   } catch (error) {
     yield put(validateTargetConditionAction.failed({
       error: 'unableToValidateKey'
