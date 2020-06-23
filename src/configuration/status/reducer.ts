@@ -2,73 +2,75 @@ import { reducerWithoutInitialState } from 'typescript-fsa-reducers';
 import { ConfigurationEntryStatusState } from './state';
 import { ErrorReport } from './models/errorReport';
 import {
-    initializeConfigurationEntryAction,
-    submitConfigurationEntryAction,
-    validateConfigurationEntryAction
+    initializeConfigurationAction,
+    submitConfigurationAction,
+    validateConfigurationAction
 } from './actions';
 import { FormState } from './models/formState';
 
 export const configurationStatusReducer = reducerWithoutInitialState<ConfigurationEntryStatusState>()
-    .case(initializeConfigurationEntryAction.started, (state: ConfigurationEntryStatusState) => {
+    .case(initializeConfigurationAction.started, (state: ConfigurationEntryStatusState) => {
         const updatedState = {...state};
         updatedState.formStateError = undefined;
         updatedState.formState = FormState.INITIALIZING;
 
         return updatedState;
     })
-    .case(initializeConfigurationEntryAction.done, (state: ConfigurationEntryStatusState) => {
+    .case(initializeConfigurationAction.done, (state: ConfigurationEntryStatusState) => {
+        // tslint:disable-next-line: no-console
+        console.log('here we are');
         const updatedState = {...state};
         updatedState.formStateError = undefined;
-        updatedState.formState = FormState.EDITING;
+        updatedState.formState = FormState.INITIALIZED;
 
         return updatedState;
     })
-    .case(initializeConfigurationEntryAction.failed, (state: ConfigurationEntryStatusState, payload: { error: ErrorReport}) => {
+    .case(initializeConfigurationAction.failed, (state: ConfigurationEntryStatusState, payload: { error: ErrorReport}) => {
         const updatedState = {...state};
         updatedState.formStateError = payload.error;
-        updatedState.formState = FormState.ERROR;
+        updatedState.formState = FormState.ERROR_INITIALIZING;
 
         return updatedState;
     })
-    .case(validateConfigurationEntryAction.started, (state: ConfigurationEntryStatusState) => {
+    .case(validateConfigurationAction.started, (state: ConfigurationEntryStatusState) => {
         const updatedState = {...state};
         updatedState.formStateError = undefined;
         updatedState.formState = FormState.VALIDATING;
 
         return updatedState;
     })
-    .case(validateConfigurationEntryAction.done, (state: ConfigurationEntryStatusState) => {
+    .case(validateConfigurationAction.done, (state: ConfigurationEntryStatusState) => {
         const updatedState = {...state};
         updatedState.formStateError = undefined;
         updatedState.formState = FormState.VALIDATED;
 
         return updatedState;
     })
-    .case(validateConfigurationEntryAction.failed, (state: ConfigurationEntryStatusState, payload: { error: ErrorReport}) => {
+    .case(validateConfigurationAction.failed, (state: ConfigurationEntryStatusState, payload: { error: ErrorReport}) => {
         const updatedState = {...state};
         updatedState.formStateError = payload.error;
-        updatedState.formState = FormState.ERROR;
+        updatedState.formState = FormState.ERROR_VALIDATING;
 
         return updatedState;
     })
-    .case(submitConfigurationEntryAction.started, (state: ConfigurationEntryStatusState) => {
+    .case(submitConfigurationAction.started, (state: ConfigurationEntryStatusState) => {
         const updatedState = {...state};
         updatedState.formStateError = undefined;
         updatedState.formState = FormState.SUBMITTING;
 
         return updatedState;
     })
-    .case(submitConfigurationEntryAction.done, (state: ConfigurationEntryStatusState) => {
+    .case(submitConfigurationAction.done, (state: ConfigurationEntryStatusState) => {
         const updatedState = {...state};
         updatedState.formStateError = undefined;
         updatedState.formState = FormState.SUBMITTED;
 
         return updatedState;
     })
-    .case(submitConfigurationEntryAction.failed, (state: ConfigurationEntryStatusState, payload: { error: ErrorReport}) => {
+    .case(submitConfigurationAction.failed, (state: ConfigurationEntryStatusState, payload: { error: ErrorReport}) => {
         const updatedState = {...state};
         updatedState.formStateError = payload.error;
-        updatedState.formState = FormState.ERROR;
+        updatedState.formState = FormState.ERROR_SUBMITTING;
 
         return updatedState;
     });

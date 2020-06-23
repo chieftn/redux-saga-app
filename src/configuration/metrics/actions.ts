@@ -14,9 +14,9 @@ export interface ValidationResult {
 }
 
 export const removeMetricAction = actionCreator<string>('REMOVE');
-export const setMetricNameAction = actionCreator<KeyValue>('_NAME/SET');
-export const setMetricValueAction = actionCreator<KeyValue>('_VALUE/SET');
-export const setMetricNameDuplicatesAction = actionCreator<Set<string>>('_NAME_DUPLICATE/SET');
-export const setMetricNameValidationAction = actionCreator<KeyValue[]>('_NAME_VALIDATION/SET');
-export const setMetricValueValidationAction = actionCreator<KeyValue[]>('_VALUE_VALIDATION/SET');
+export const setMetricNameAction = actionCreator<KeyValue>('NAME/SET_VALUE');
+export const setMetricValueAction = actionCreator<KeyValue>('VALUE/SET_VALUE');
+export const setMetricNameDuplicatesAction = actionCreator<Set<string>>('NAME_DUPLICATE/SET');
+export const setMetricNameValidationAction = actionCreator<KeyValue[]>('NAME_VALIDATION/SET');
+export const setMetricValueValidationAction = actionCreator<KeyValue[]>('VALUE_VALIDATION/SET');
 export const validateMetricsAction = actionCreator.async<void, ValidationResult, string>('VALIDATE');

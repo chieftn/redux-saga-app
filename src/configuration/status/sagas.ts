@@ -1,13 +1,13 @@
 import { takeLatest } from 'redux-saga/effects';
-import { initializeConfigurationEntryAction, submitConfigurationEntryAction, validateConfigurationEntryAction } from './actions';
-import { validateConfigurationEntrySaga } from './sagas/validateConfigurationEntrySaga';
-import { initializeConfigurationEntrySaga  } from './sagas/initializeConfigurationEntrySaga';
-import { submitConfigurationEntrySaga } from './sagas/submitConfigurationEntrySaga';
+import { initializeConfigurationAction, submitConfigurationAction, validateConfigurationAction } from './actions';
+import { validateConfigurationSaga } from './sagas/validateConfigurationSaga';
+import { initializeConfigurationSaga  } from './sagas/initializeConfigurationSaga';
+import { submitConfigurationSaga } from './sagas/submitConfigurationSaga';
 
 export const statusSagas = () => {
     return [
-        takeLatest(initializeConfigurationEntryAction.started, initializeConfigurationEntrySaga),
-        takeLatest(submitConfigurationEntryAction.started, submitConfigurationEntrySaga),
-        takeLatest(validateConfigurationEntryAction.started, validateConfigurationEntrySaga)
+        takeLatest(initializeConfigurationAction.started, initializeConfigurationSaga),
+        takeLatest(submitConfigurationAction.started, submitConfigurationSaga),
+        takeLatest(validateConfigurationAction.started, validateConfigurationSaga)
     ];
 };

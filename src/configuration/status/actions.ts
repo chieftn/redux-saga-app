@@ -4,6 +4,6 @@ import { ErrorReport } from './models/errorReport';
 export const STATUS = 'STATUS';
 const actionCreator = actionCreatorFactory(STATUS);
 
-export const initializeConfigurationEntryAction = actionCreator.async<void, void, ErrorReport>('SET');
-export const submitConfigurationEntryAction = actionCreator.async<void, void, ErrorReport>('POST');
-export const validateConfigurationEntryAction = actionCreator.async<void, void, ErrorReport>('VALIDATE');
+export const initializeConfigurationAction = actionCreator.async<void, void, ErrorReport>('SET');
+export const submitConfigurationAction = actionCreator.async<void, void, ErrorReport>('POST');
+export const validateConfigurationAction = actionCreator.async<void, void, ErrorReport>('VALIDATE');

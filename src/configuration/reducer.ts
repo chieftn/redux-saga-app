@@ -24,6 +24,7 @@ export const configurationEntryReducer = (state: ConfigurationEntryState, action
     if (action.type.startsWith(STATUS)) {
       const updatedState = {...state};
       updatedState.configurationEntryStatusState = configurationStatusReducer(state.configurationEntryStatusState, action);
+      return updatedState;
     }
 
     return state;
