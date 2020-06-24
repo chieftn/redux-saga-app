@@ -1,6 +1,6 @@
 import { delay } from 'redux-saga/effects';
 
-export function* submitSaga() {
+export function* submitDeviceSaga() {
     // tslint:disable-next-line: no-console
     console.log('submtting started');
 
@@ -8,6 +8,5 @@ export function* submitSaga() {
     yield delay(500);
 
     // tslint:disable-next-line: no-console
-    console.log('submitting done')
-
+    console.log('submitting done');
 }
