@@ -16,6 +16,9 @@ export const TargetCondition: React.FC<TargetConditionProps> = ({ targetConditio
         onTargetConditionChange(newValue || '');
     };
 
+    // tslint:disable-next-line: no-console
+    console.log('render');
+
     return (
         <div>
             <div className="section-header">Target Condition</div>

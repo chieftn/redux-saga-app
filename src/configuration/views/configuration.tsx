@@ -20,9 +20,19 @@ export const Configuration: React.FC = () => {
         dispatch(initializeConfigurationAction.started());
     }, []);  // tslint:disable-line: align
 
-    const onTargetConditionChange = (value: string) => {
-        dispatch(setTargetConditionAction(value));
-    };
+    const { targetCondition } = targetConditionState;
+    const useTargetCondition = React.useMemo(() => {
+        const onTargetConditionChange = (value: string) => {
+            dispatch(setTargetConditionAction(value));
+        };
+
+        return (
+            <TargetCondition
+                targetConditionState={targetConditionState}
+                onTargetConditionChange={onTargetConditionChange}
+            />
+        );
+    },                                       [targetCondition]);
 
     const onMetricNameChange = (key: string, value: string) => {
         dispatch(setMetricNameAction({key, value}));
@@ -50,12 +60,7 @@ export const Configuration: React.FC = () => {
 
     return (
         <div className="configuration-form">
-            {targetConditionState && (
-                <TargetCondition
-                    targetConditionState={targetConditionState}
-                    onTargetConditionChange={onTargetConditionChange}
-                />
-            )}
+            {useTargetCondition}
 
             {metricsState && (
                 <ConfigurationMetrics
