@@ -7,7 +7,7 @@ import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
 import store from '../../redux/store';
 import { DeviceList } from '../../devices/components/deviceListPromise';
 // import { DeviceList } from '../../devices/components/deviceList';
-import { Device } from '../../devices/components/device';
+import { DeviceView } from '../../devices/components/deviceView';
 import './application.css';
 
 export const Application: React.FC = () => {
@@ -20,7 +20,7 @@ export const Application: React.FC = () => {
                         <BrowserRouter>
                             <Switch>
                                 <Route path="/" component={DeviceList} exact={true} />
-                                <Route path="/devices/:id" component={Device} />
+                                <Route path="/devices/:id" component={DeviceView} />
                             </Switch>
                         </BrowserRouter>
                     </div>

@@ -9,3 +9,4 @@ const actionCreator = actionCreatorFactory('DEVICES');
 export const fetchDevicesAction = actionCreator.async<undefined, Device[], Error>('GET');
 export const setDevicesEdgeConfigurationAction = actionCreator<Map<string, SynchronizationWrapper<DeviceEdgeConfiguration>>>('SET_EDGE');
 export const setServiceParametersAction = actionCreator<{ hostName: string, sharedAccessAuthorizationRules: SharedAccessAuthorizationRule[]}>('SET_SERVICE');
+export const submitDeviceAction = actionCreator('SET_DEVICE');
