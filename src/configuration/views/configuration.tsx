@@ -30,7 +30,7 @@ export const Configuration: React.FC = () => {
                 onTargetConditionChange={onTargetConditionChange}
             />
         );
-    },                                       [targetConditionState]);
+    }, [targetConditionState]); // tslint:disable-line: align
 
     const onSubmitClick = () => {
         dispatch(validateConfigurationAction.started());
