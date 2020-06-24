@@ -7,7 +7,6 @@ import { configurationEntryInitialState } from '../state';
 import { TargetCondition } from '../targetCondition/components/targetCondition';
 import { ConfigurationMetrics } from '../metrics/components/configurationMetrics';
 import { setTargetConditionAction } from '../targetCondition/actions';
-import { setMetricNameAction, setMetricValueAction, removeMetricAction } from '../metrics/actions';
 import { initializeConfigurationAction, validateConfigurationAction } from '../status/actions';
 import { FormState } from '../status/models/formState';
 import './configuration.css';
@@ -20,7 +19,6 @@ export const Configuration: React.FC = () => {
         dispatch(initializeConfigurationAction.started());
     }, []);  // tslint:disable-line: align
 
-    const { targetCondition } = targetConditionState;
     const useTargetCondition = React.useMemo(() => {
         const onTargetConditionChange = (value: string) => {
             dispatch(setTargetConditionAction(value));
@@ -32,19 +30,7 @@ export const Configuration: React.FC = () => {
                 onTargetConditionChange={onTargetConditionChange}
             />
         );
-    },                                       [targetCondition]);
-
-    const onMetricNameChange = (key: string, value: string) => {
-        dispatch(setMetricNameAction({key, value}));
-    };
-
-    const onMetricValueChange = (key: string, value: string) => {
-        dispatch(setMetricValueAction({key, value}));
-    };
-
-    const onMetricDelete = (key: string) => {
-        dispatch(removeMetricAction(key));
-    };
+    },                                       [targetConditionState]);
 
     const onSubmitClick = () => {
         dispatch(validateConfigurationAction.started());
@@ -67,9 +53,7 @@ export const Configuration: React.FC = () => {
                     metrics={metricsState.metrics}
                     metricsNameValidation={metricsState.metricsNameValidation}
                     metricsValueValidation={metricsState.metricsValueValidation}
-                    onMetricNameChange={onMetricNameChange}
-                    onMetricValueChange={onMetricValueChange}
-                    onMetricDelete={onMetricDelete}
+                    dispatch={dispatch}
                 />
             )}
 

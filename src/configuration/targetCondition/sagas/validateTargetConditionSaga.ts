@@ -7,26 +7,25 @@ export function* validateTargetConditionSaga(action: Action<string>) {
 }
 
 export function* validateTargetCondition(targetCondition: string, serverValidation: boolean) {
-  let validationKey = '';
-
   try {
     if (!targetCondition) {
-      validationKey = 'blank';
+      yield put(validateTargetConditionAction.done({
+        result: 'blank' // empty implies successful validation
+      }));
+
       return;
     }
 
     if (serverValidation) {
-       // const result = yield call serverValidation;
-       validationKey = targetCondition === 'a' ? 'badServerValidation' : '';
+      yield put(validateTargetConditionAction.done({
+        result: targetCondition === 'a' ? 'badServerValidation' : '' // empty implies successful validation
+      }));
+
+      return;
     }
-
-    yield put(validateTargetConditionAction.done({
-      result: validationKey// empty implies successful validation
-    }));
-
   } catch (error) {
     yield put(validateTargetConditionAction.failed({
-      error: validationKey// empty implies successful validation
+      error: 'couldNotValidate'
     }));
   }
 }
