@@ -10,7 +10,7 @@ import { submitDeviceAction } from '../actions';
 export const DeviceView: React.FC = () => {
     const { id } = useParams();
     const [tags, setTags ] = React.useState<string>('');
-    const { dispatch } = useDispatch();
+    const dispatch = useDispatch();
     const matchingDevices: Device[]  = useSelector((state: StateInterface) => state.devices.devices.payload.filter(s => s.name = id));
 
     const onTagsChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string) => {
